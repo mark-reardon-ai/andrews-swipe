@@ -46,12 +46,10 @@ function Kitchen({ data, reload, hash }: {
     }, [complete, rounds.current]);
     if (hash === '#/admin')
         return <AdminScreen />;
-    if (hash === '#/loved')
-        return <main className="center-screen screen"><h1>Your loved pictures</h1><p>Your picture summary is coming in step 3.</p><a className="button" href="#/">Back to your choices</a></main>;
     if (!state.person)
         return <StartScreen deck={deck} files={state.files} onChoose={state.choose}/>;
     if (complete && file)
-        return <RoundCompleteScreen file={file} newRound={newRound} onNew={reload} onSwitch={() => state.choose(null)} onUndo={state.undo}/>;
+        return <RoundCompleteScreen deck={deck} file={file} files={Object.values(state.files)} endpoint={rounds.answers_endpoint} onRevise={state.revise} onFavorite={state.favorite} newRound={newRound} onNew={reload} onSwitch={() => state.choose(null)}/>;
     if (state.pause)
         return <main className="center-screen screen"><span className="house-mark">♥</span><h1>Nice work!</h1><p>Take a break: next set whenever you like.</p><button className="primary" onClick={state.keepGoing}>Keep going</button><button className="text-button" onClick={state.undo}>↶ Oops, go back</button><button className="text-button" onClick={() => state.choose(null)}>Switch person</button></main>;
     const ios = /iPad|iPhone|iPod/.test(navigator.userAgent);
@@ -71,7 +69,10 @@ export default function App() {
     const [generation, setGeneration] = useState(0);
     const [hash, setHash] = useState(location.hash);
     useEffect(() => {
-        const change = () => setHash(location.hash);
+        const change = () => {
+            setHash(location.hash);
+            if (location.hash !== '#/admin') setGeneration(g => g + 1);
+        };
         window.addEventListener('hashchange', change);
         if (!persistRequested) {
             persistRequested = true;

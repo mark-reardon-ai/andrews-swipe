@@ -114,6 +114,7 @@ export interface Rounds {
     format: '31andrews.swipe_rounds/1';
     current: string;
     answers_endpoint?: string;
+    admin_key?: string;
     rounds: Round[];
 }
 export const sectionOf = (card: Card) => card.option_tags?.find(t => t.startsWith('section:') && t.length > 8)?.slice(8) ?? card.kind;

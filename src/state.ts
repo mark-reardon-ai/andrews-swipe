@@ -85,8 +85,28 @@ export function useAnswers(deck: Deck, store: AnswerStore, initial: Files, size:
         setPause(false);
         shown.current = Date.now();
     }
-    return { files, person, index, pause, choose, answer, annotate, undo, keepGoing: () => {
+    function revise(cardId: string, swipe: SwipeAnswer['swipe']) {
+        if (!person)
+            return;
+        const previous = filesRef.current[person];
+        if (!previous)
+            return;
+        const answers = previous.answers.map(a => a.card_id === cardId ? { ...a, swipe, strength: undefined, revisited: true, at: new Date().toISOString() } : a);
+        commit(person, buildAnswersFile(deck, person, answers, previous));
+    }
+    function favorite(cardId: string) {
+        if (!person)
+            return;
+        const previous = filesRef.current[person];
+        if (!previous)
+            return;
+        const favorites = previous.favorites ?? [];
+        commit(person, { ...previous, favorites: favorites.includes(cardId) ? favorites.filter(id => id !== cardId) : [...favorites, cardId] });
+    }
+    return {
+        revise, favorite, files, person, index, pause, choose, answer, annotate, undo, keepGoing: () => {
             setPause(false);
             shown.current = Date.now();
-        } };
+        }
+    };
 }

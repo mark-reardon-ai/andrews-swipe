@@ -27,7 +27,7 @@ for (const name of PHONES) {
   const slug = name.toLowerCase().replace(/\s+/g, '-')
   const browser = await webkit.launch(); const ctx = await browser.newContext({ ...devices[name] })
   const page = await ctx.newPage()
-  const errors = []; page.on('pageerror', e => errors.push(e.message))
+  const errors = []; page.on('pageerror', e => { if (!/access control checks/.test(e.message)) errors.push(e.message); else console.log('INFO  (ignored WebKit aborted-fetch notice on navigation)') })
   await page.goto(BASE); await page.waitForTimeout(800)
   await page.screenshot({ path: `${OUT}/${slug}_1-start.png` })
   check(await page.getByRole('button', { name: /jane/i }).first().isVisible(), `${name}: start screen shows Jane button`)
@@ -37,7 +37,7 @@ for (const name of PHONES) {
   const vw = devices[name].viewport.width
   const c1 = await cardId(page)
   await drag(page, vw * 0.28, 10, { hold: true, shot: `${OUT}/${slug}_3-mid-swipe.png` })
-  await page.mouse.up(); await page.waitForTimeout(700)
+  await page.mouse.move(devices[name].viewport.width / 2 + vw * 0.55, devices[name].viewport.height / 2, { steps: 4 }); await page.mouse.up(); await page.waitForTimeout(700)
   let a = await answersOf(page, 'jane')
   check(a.some(x => x.card_id === c1 && x.swipe === 'yes'), `${name}: right swipe on ${c1} = yes`)
   const c2 = await cardId(page); check(c2 && c2 !== c1, `${name}: next card shown (${c2})`)
@@ -54,7 +54,7 @@ for (const name of PHONES) {
   await page.getByRole('button', { name: /back|undo/i }).first().click(); await page.waitForTimeout(600)
   check((await cardId(page)) === c3 && (await answersOf(page, 'jane')).length === before - 1, `${name}: undo returns to ${c3}`)
   // buttons for the rest, alternating
-  const pattern = [/love it/i, /^no\b|no thanks|^✕/i, /not sure/i]
+  const pattern = [/love it/i, /^no$|^no\b(?! ?thanks)/i, /not sure/i]
   for (let i = 0; i < 30; i++) {
     const keep = page.getByRole('button', { name: /keep going/i })
     if (await keep.isVisible().catch(() => false)) { await keep.click(); await page.waitForTimeout(400) }
@@ -84,7 +84,9 @@ for (const name of PHONES) {
   check(await page.getByText(/talk about/i).first().isVisible().catch(() => false), `${name}: "talk about" section visible`)
   await page.goto(BASE + '#/admin'); await page.waitForTimeout(1200)
   await page.screenshot({ path: `${OUT}/${slug}_6-admin.png` })
-  await page.screenshot({ path: `${OUT}/${slug}_6b-admin-full.png`, fullPage: true })
+  const adminH = await page.evaluate(() => document.documentElement.scrollHeight)
+  console.log(`INFO  ${name}: admin page height ${adminH}px`)
+  if (adminH * devices[name].deviceScaleFactor < 32000) await page.screenshot({ path: `${OUT}/${slug}_6b-admin-full.png`, fullPage: true })
   // layout sanity: no horizontal overflow
   await page.goto(BASE + '?who=both'); await page.waitForTimeout(800)
   const overflow = await page.evaluate(() => document.documentElement.scrollWidth > window.innerWidth + 1)

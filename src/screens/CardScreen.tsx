@@ -29,6 +29,7 @@ export default function CardScreen({ deck, index, size, person, onAnswer, onNote
     const [draft, setDraft] = useState('');
     const [sheet, setSheet] = useState(false);
     const [target, setTarget] = useState<string | null>(null);
+    const [detailOpen, setDetailOpen] = useState(false);
     const [zoom, setZoom] = useState(false);
     const [toast, setToast] = useState(false);
     const last = useRef<string | null>(null);
@@ -95,12 +96,13 @@ export default function CardScreen({ deck, index, size, person, onAnswer, onNote
         }
     }, [deck, index]);
     useEffect(() => {
-        if (!sheet && !zoom)
+        if (!sheet && !zoom && !detailOpen)
             return;
         const close = (event: KeyboardEvent) => {
             if (event.key === 'Escape') {
                 setSheet(false);
                 setZoom(false);
+                setDetailOpen(false);
             }
             if (event.key === 'Tab') {
                 const dialog = document.querySelector<HTMLElement>('[role="dialog"]');
@@ -121,76 +123,122 @@ export default function CardScreen({ deck, index, size, person, onAnswer, onNote
         };
         document.addEventListener('keydown', close);
         return () => document.removeEventListener('keydown', close);
-    }, [sheet, zoom]);
+    }, [sheet, zoom, detailOpen]);
     return <main className="card-screen screen">
-    <div className="card-content" inert={sheet || zoom}>
-      <header className="card-top">
-        <button className="person-chip" disabled={busy} onClick={onSwitch}>{name}<small>Switch</small></button>
-        <div className="top-progress"><span>{index - offset + 1} of {total}</span><progress value={index - offset + 1} max={total} aria-label="Round progress"/></div>
-        <button className="text-button" disabled={!canUndo || busy} onClick={undo}>↶ Back</button>
-      </header>
-      <div className="card-stack">
-        {deck.cards[index + 1] && <SwipeCard key={`${deck.cards[index + 1].id}-under`} card={deck.cards[index + 1]} underneath/>}
-        <SwipeCard key={`${person}-${card.id}`} card={card} request={request} onAnswer={answered} onBusy={setBusy} onInteract={interact} onUndo={undo} onZoom={() => {
-            interact();
-            setZoom(true);
-        }}/>
-        {card.image.fit === 'contain' && <button ref={zoomButton} className="zoom-access" onClick={() => {
-                interact();
-                setZoom(true);
-            }}>Tap to zoom</button>}
-        {coach && <aside className="coach"><span aria-hidden="true">☝</span><p>Swipe right if you love it, left if not. Or tap the buttons.</p></aside>}
-      </div>
-      <section className="question" aria-live="polite"><h1>{card.question}</h1>{card.detail && <p>{card.detail}</p>}{card.gives_up_vs_expansion && <p>{card.gives_up_vs_expansion}</p>}</section>
-      <footer className="answer-footer">
-        <button ref={noteButton} className="note-pill" disabled={busy} onClick={() => {
-            interact();
-            setTarget(null);
-            setDraft(note);
-            setSheet(true);
-        }}>{note ? 'Edit your note' : 'Add a note'}</button>
-        <div className="answer-buttons">
-          <button className="no" disabled={busy} onClick={() => choose({ swipe: 'no' })}><b aria-hidden="true">✕</b><span>No</span></button>
-          <button className="skip" disabled={busy} onClick={() => choose({ swipe: 'skip' })}><b aria-hidden="true">?</b><span>Not sure</span></button>
-          <button className="yes" disabled={busy} onPointerDown={e => {
-            if (!e.isPrimary || e.button !== 0)
-                return;
-            e.currentTarget.setPointerCapture(e.pointerId);
-            held.current = false;
-            longPress.current = setTimeout(() => {
-                held.current = true;
-                choose({ swipe: 'yes', strength: 3 });
-            }, 600);
-        }} onPointerUp={cancelHold} onPointerCancel={cancelHold} onContextMenu={e => e.preventDefault()} onClick={() => {
-            cancelHold();
-            if (!held.current)
-                choose({ swipe: 'yes' });
-            held.current = false;
-        }}><b aria-hidden="true">♥</b><span>Love it</span></button>
-        </div>
-      </footer>
-      {last.current && <button className="last-note" disabled={busy} onClick={() => {
+        <div className="card-content" inert={sheet || zoom || detailOpen}>
+            <header className="card-top">
+                <button className="person-chip" disabled={busy} onClick={onSwitch}>{name}<small>Switch</small>
+                </button>
+                <div className="top-progress">
+                    <span>{index - offset + 1} of {total}</span>
+                    <progress value={index - offset + 1} max={total} aria-label="Round progress" />
+                </div>
+                <button className="text-button" disabled={!canUndo || busy} onClick={undo}>↶ Back</button>
+            </header>
+            <div className="card-stack">
+                {deck.cards[index + 1] && <SwipeCard key={`${deck.cards[index + 1].id}-under`} card={deck.cards[index + 1]} underneath />}
+                <SwipeCard key={`${person}-${card.id}`} card={card} request={request} onAnswer={answered} onBusy={setBusy} onInteract={interact} onUndo={undo} onZoom={() => {
+                    interact();
+                    setZoom(true);
+                }} />
+                {card.image.fit === 'contain' && <button ref={zoomButton} className="zoom-access" onClick={() => {
+                    interact();
+                    setZoom(true);
+                }}>Tap to zoom</button>}
+                {coach && <aside className="coach">
+                    <span aria-hidden="true">☝</span>
+                    <p>Swipe right if you love it, left if not. Or tap the buttons.</p>
+                </aside>}
+            </div>
+            <section className="question" aria-live="polite">
+                <h1>{card.question}</h1>{(card.detail || card.gives_up_vs_expansion) && <div className="detail-preview">
+                    <p>{[card.detail, card.gives_up_vs_expansion].filter(Boolean).join(' ')}</p>
+                    <button onClick={() => setDetailOpen(true)}>More</button>
+                </div>}</section>
+            <footer className="answer-footer">
+                <button ref={noteButton} className="note-pill" disabled={busy} onClick={() => {
+                    interact();
+                    setTarget(null);
+                    setDraft(note);
+                    setSheet(true);
+                }}>{note ? 'Edit your note' : 'Add a note'}</button>
+                <div className="answer-buttons">
+                    <button className="no" disabled={busy} onClick={() => choose({ swipe: 'no' })}>
+                        <b aria-hidden="true">✕</b>
+                        <span>No</span>
+                    </button>
+                    <button className="skip" disabled={busy} onClick={() => choose({ swipe: 'skip' })}>
+                        <b aria-hidden="true">?</b>
+                        <span>Not sure</span>
+                    </button>
+                    <button className="yes" disabled={busy} onPointerDown={e => {
+                        if (!e.isPrimary || e.button !== 0)
+                            return;
+                        e.currentTarget.setPointerCapture(e.pointerId);
+                        held.current = false;
+                        longPress.current = setTimeout(() => {
+                            held.current = true;
+                            choose({ swipe: 'yes', strength: 3 });
+                        }, 600);
+                    }} onPointerUp={cancelHold} onPointerCancel={cancelHold} onContextMenu={e => e.preventDefault()} onClick={() => {
+                        cancelHold();
+                        if (!held.current)
+                            choose({ swipe: 'yes' });
+                        held.current = false;
+                    }}>
+                        <b aria-hidden="true">♥</b>
+                        <span>Love it</span>
+                    </button>
+                </div>
+            </footer>
+            {last.current && <button className="last-note" disabled={busy} onClick={() => {
                 setTarget(last.current);
                 setDraft('');
                 setSheet(true);
             }}>Note on previous picture</button>}
-      {toast && <aside className="encouragement" role="status">You’re doing great, {name}!</aside>}
-      {hint && <aside className="home-hint"><p>{hint}</p><button onClick={dismissHint}>Got it</button></aside>}
-    </div>
-    {sheet && <div className="modal-backdrop"><section role="dialog" aria-modal="true" aria-labelledby="note-title" className="note-sheet"><h2 id="note-title">Your thoughts</h2><textarea autoFocus aria-label="Your note" value={draft} onChange={e => setDraft(e.target.value)} placeholder="What would you like Mark to know?"/><div><button onClick={() => {
-                setSheet(false);
-                noteButton.current?.focus();
-            }}>Cancel</button><button className="primary" onClick={() => {
-                if (target)
-                    onNote(target, draft);
-                else
-                    setNote(draft);
-                setSheet(false);
-                noteButton.current?.focus();
-            }}>Save note</button></div></section></div>}
-    {zoom && <div className="zoom-viewer" role="dialog" aria-modal="true" aria-label="Floor plan viewer"><button autoFocus onClick={() => {
+            {toast && <aside className="encouragement" role="status">You’re doing great, {name}!</aside>}
+            {hint && <aside className="home-hint">
+                <p>{hint}</p>
+                <button onClick={dismissHint}>Got it</button>
+            </aside>}
+        </div>
+        {detailOpen && <div className="modal-backdrop">
+            <section className="note-sheet" role="dialog" aria-modal="true" aria-labelledby="detail-title">
+                <h2 id="detail-title">{card.question}</h2>
+                <p>{card.detail}</p>
+                <p>{card.gives_up_vs_expansion}</p>
+                <button autoFocus onClick={() => setDetailOpen(false)}>Close</button>
+            </section>
+        </div>}
+        {sheet && <div className="modal-backdrop">
+            <section role="dialog" aria-modal="true" aria-labelledby="note-title" className="note-sheet">
+                <h2 id="note-title">Your thoughts</h2>
+                <textarea autoFocus aria-label="Your note" value={draft} onChange={e => setDraft(e.target.value)} placeholder="What would you like Mark to know?" />
+                <div>
+                    <button onClick={() => {
+                        setSheet(false);
+                        noteButton.current?.focus();
+                    }}>Cancel</button>
+                    <button className="primary" onClick={() => {
+                        if (target)
+                            onNote(target, draft);
+                        else
+                            setNote(draft);
+                        setSheet(false);
+                        noteButton.current?.focus();
+                    }}>Save note</button>
+                </div>
+            </section>
+        </div>}
+        {zoom && <div className="zoom-viewer" role="dialog" aria-modal="true" aria-label="Floor plan viewer">
+            <button autoFocus onClick={() => {
                 setZoom(false);
                 zoomButton.current?.focus();
-            }}>✕ Close</button><div className="zoom-scroll"><img src={card.image.file} alt={card.image.alt}/></div><p>Pinch with two fingers to zoom</p></div>}
-  </main>;
+            }}>✕ Close</button>
+            <div className="zoom-scroll">
+                <img src={card.image.file} alt={card.image.alt} />
+            </div>
+            <p>Pinch with two fingers to zoom</p>
+        </div>}
+    </main>;
 }

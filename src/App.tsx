@@ -78,7 +78,6 @@ function Kitchen({ data, reload, hash }: {
       files={Object.values(state.files)}
       endpoint={rounds.answers_endpoint}
       onRevise={state.revise}
-      onFavorite={state.favorite}
       newRound={newRound}
       onNew={reload}
       onSwitch={() => state.choose(null)}

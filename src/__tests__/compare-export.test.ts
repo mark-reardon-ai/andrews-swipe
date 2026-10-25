@@ -23,7 +23,7 @@ describe('comparisons across participants', () => {
     expect(tom.answers).toHaveLength(1);
   });
 });
-describe('CSV and favorite exports', () => {
+describe('CSV and answer exports', () => {
   it('uses answer.schema columns plus joint, and quotes CSV values', () => {
     const joint = file('both', 'yes');
     const csv = answersCSV([joint]);
@@ -31,10 +31,10 @@ describe('CSV and favorite exports', () => {
     expect(csv).toContain(`"${deck.cards[0].id}","other","yes","",""`);
     expect(csv).toContain('"swipe_app","other","true"');
   });
-  it('retains only favorites that are still loved when rebuilding', () => {
+  it('omits legacy favorites when rebuilding', () => {
     const previous = file('tom', 'yes');
     previous.favorites = [deck.cards[0].id];
-    expect(buildAnswersFile(deck, 'tom', previous.answers, previous).favorites).toEqual(previous.favorites);
-    expect(buildAnswersFile(deck, 'tom', [{ ...previous.answers[0], swipe: 'no' }], previous).favorites).toEqual([]);
+    expect(buildAnswersFile(deck, 'tom', previous.answers, previous)).toHaveProperty('answers', previous.answers);
+    expect(buildAnswersFile(deck, 'tom', previous.answers, previous)).not.toHaveProperty('favorites');
   });
 });

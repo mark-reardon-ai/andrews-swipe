@@ -441,8 +441,6 @@ p {
   display: grid;
   grid-template-columns: repeat(2, minmax(0, 1fr));
   gap: 12px;
-  max-height: 60dvh;
-  overflow-y: auto;
   padding: 4px;
 }
 
@@ -455,23 +453,13 @@ p {
 
 .loved-grid img {
   width: 100%;
-  height: 130px;
+  aspect-ratio: 4 / 3;
   display: block;
   background: #eae5d8;
 }
 
-.loved-grid button {
-  position: absolute;
-  right: 4px;
-  top: 78px;
-  min-width: 48px;
-  min-height: 48px;
-  padding: 4px;
-  font-size: 27px;
-  color: #954d45;
-}
-
 .loved-grid p {
+  margin: 0;
   padding: 8px;
   font-size: 14px;
 }
@@ -1052,3 +1040,15 @@ summary:focus-visible, input:focus-visible, select:focus-visible, textarea:focus
 .answer-buttons .no { background: #f0ded5; }
 .answer-buttons .yes { background: #dce6d6; }
 .answer-buttons [data-testid="btn-undo"] { width: 48px; min-width: 48px; height: 48px; min-height: 48px; font-size: 24px; background: #e7e8db; }
+
+/* Keep safe-area padding outside the content height, including in iOS standalone mode. */
+.card-screen { padding-top: 0; }
+.card-top { height: auto; min-height: calc(56px + env(safe-area-inset-top)); padding: calc(4px + env(safe-area-inset-top)) 8px 4px; }
+.answer-buttons .ab-choice { background: #fffcf5; color: #203747; }
+.ab-card .stamp { color: #203747; }
+.ab-card .yes-edge { box-shadow: inset 18px 0 35px #20374766; }
+.ab-card .no-edge { box-shadow: inset -18px 0 35px #20374766; }
+.pick-row { display: flex; align-items: center; gap: 12px; margin: 12px 0; }
+.pick-row img { width: 64px; height: 64px; flex-shrink: 0; border-radius: 8px; }
+.pick-row p { margin: 0 0 4px; font-size: 14px; }
+.pick-row strong { font-size: 14px; }

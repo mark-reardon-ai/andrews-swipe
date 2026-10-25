@@ -9,6 +9,7 @@ import { prepareDeck } from '../deck';
 import { compareAnswers, conflictText } from '../compare';
 import { copy } from '../copy';
 import CardScreen from '../screens/CardScreen';
+import RoundCompleteScreen from '../screens/RoundCompleteScreen';
 const deck = sample as unknown as Deck;
 const card = deck.cards[0];
 const ab = deck.cards[1];
@@ -61,6 +62,50 @@ describe('two actions', () => {
       const html = renderToStaticMarkup(<CardScreen deck={changed} index={index} size={10} person="tom" onAnswer={() => {}} onSwitch={() => {}} onUndo={() => {}} canUndo hint={null} dismissHint={() => {}} />);
       expect(html).not.toMatch(/Not sure|\bnote\b|\bMore\b|Hidden detail|Tap to zoom|LOVE LOVE/i);
       for (const id of ['swipe-card', 'btn-left', 'btn-right', 'btn-undo']) expect(html).toContain(`data-testid="${id}"`);
+    }
+  });
+});
+
+describe('finish screen and neutral choices', () => {
+  const finish = (swipe: 'yes' | 'no', pick?: 'a' | 'b') => {
+    const file = buildAnswersFile(deck, 'jane', [
+      { card_id: card.id, swipe: 'yes', at: '2026-10-25T12:00:00Z' },
+      { card_id: ab.id, swipe, at: '2026-10-25T12:00:00Z' },
+    ]);
+    if (pick) file.answers[1].x_pick = pick;
+    else delete file.answers[1].x_pick;
+    return renderToStaticMarkup(<RoundCompleteScreen deck={deck} file={file} files={[file]} newRound={false} onNew={() => {}} onSwitch={() => {}} onRevise={() => {}} />);
+  };
+  it.each([
+    ['no', undefined, 'Counter', ab.image.file],
+    ['yes', undefined, 'Island', ab.image.file_b],
+    ['yes', 'a', 'Counter', ab.image.file],
+    ['no', 'b', 'Island', ab.image.file_b],
+  ] as const)('shows the picked thumbnail and label for %s / %s', (swipe, pick, label, image) => {
+    const html = finish(swipe, pick);
+    expect(html).toContain('A lovely start to your kitchen.</p>');
+    expect(html).not.toMatch(/Favorite:|Tap a heart|aria-pressed/);
+    expect(html).toContain('<h2>Your picks</h2>');
+    expect(html).toContain(`<img src="${image}" alt="${label}"`);
+    expect(html).toContain(`<strong>${label}</strong>`);
+  });
+  it('does not reserve a grid or picks section for an empty ordinary deck', () => {
+    const ordinary = { ...deck, cards: [card] };
+    const file = buildAnswersFile(ordinary, 'jane', []);
+    const html = renderToStaticMarkup(<RoundCompleteScreen deck={ordinary} file={file} files={[file]} newRound={false} onNew={() => {}} onSwitch={() => {}} onRevise={() => {}} />);
+    expect(html).toContain(copy.noLoved);
+    expect(html).not.toMatch(/loved-grid|Your picks/);
+  });
+  it.each([0, 1])('styles card %s according to its choice type', index => {
+    const html = renderToStaticMarkup(<CardScreen deck={deck} index={index} size={10} person="jane" onAnswer={() => {}} onSwitch={() => {}} onUndo={() => {}} canUndo hint={null} dismissHint={() => {}} />);
+    if (index === 1) {
+      expect(html.match(/class="ab-choice"/g)).toHaveLength(2);
+      expect(html).toContain('top-card ab-card');
+      expect(html).toContain('>COUNTER</span>');
+      expect(html).toContain('>ISLAND</span>');
+    } else {
+      expect(html).toContain('class="no"');
+      expect(html).toContain('class="yes"');
     }
   });
 });

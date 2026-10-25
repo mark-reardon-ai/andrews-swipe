@@ -15,9 +15,8 @@ interface Props {
   onNew: () => void;
   onSwitch: () => void;
   onRevise: (id: string, swipe: SwipeAnswer['swipe']) => void;
-  onFavorite: (id: string) => void;
 }
-export default function RoundCompleteScreen({ deck, file, files, endpoint, newRound, onNew, onSwitch, onRevise, onFavorite }: Props) {
+export default function RoundCompleteScreen({ deck, file, files, endpoint, newRound, onNew, onSwitch, onRevise }: Props) {
   const [review, setReview] = useState(false);
   const [pending, setPending] = useState(true);
   useEffect(() => {
@@ -42,7 +41,7 @@ export default function RoundCompleteScreen({ deck, file, files, endpoint, newRo
     <h1>{copy.completeTitle(personName(filePerson(file)))}</h1>
     <p>{copy.completeMessage}</p>
     <h2>{copy.loved}</h2>
-    <div className="loved-grid">{loved.map(answer => {
+    {loved.length > 0 && <div className="loved-grid">{loved.map(answer => {
       const card = deck.cards.find(c => c.id === answer.card_id);
       if (!card)
         return null;
@@ -52,20 +51,24 @@ export default function RoundCompleteScreen({ deck, file, files, endpoint, newRo
           alt={card.image.alt}
           style={{ objectFit: card.image.fit ?? 'cover' }}
 
-        /><button
-          aria-label={`Favorite: ${card.question}`}
-          aria-pressed={file.favorites?.includes(card.id) ?? false}
-          onClick={() => onFavorite(card.id)}
-
-        >{file.favorites?.includes(card.id) ? '♥' : '♡'}</button>
+        />
         <p>{card.question}</p>
       </article>;
-    })}</div>
+    })}</div>}
     {!loved.length && <p>{copy.noLoved}</p>}
-    {deck.cards.filter(isAB).map(card => {
-      const answer = file.answers.find(a => a.card_id === card.id);
-      return answer && <p key={card.id}>{card.question} — {copy.picked(answerLabel(answer.swipe, card))}</p>;
-    })}
+    {deck.cards.some(isAB) && <section className="picks">
+      <h2>{copy.yourPicks}</h2>
+      {deck.cards.filter(isAB).map(card => {
+        const answer = file.answers.find(a => a.card_id === card.id);
+        if (!answer) return null;
+        const second = answer.x_pick ? answer.x_pick === 'b' : answer.swipe === 'yes';
+        const label = second ? card.x_ab!.right : card.x_ab!.left;
+        return <article className="pick-row" key={card.id}>
+          <img src={second ? card.image.file_b : card.image.file} alt={label} style={{ objectFit: card.image.fit ?? 'cover' }} />
+          <div><p>{card.question}</p><strong>{label}</strong></div>
+        </article>;
+      })}
+    </section>}
     {comparison.some(c => c.conflict) && <section>
       <h2>{copy.discuss}</h2>
       <ComparisonList rows={comparison.filter(c => c.conflict)} />

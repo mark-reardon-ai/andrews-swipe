@@ -60,8 +60,7 @@ export function parseFile(raw: string | null, deckId: string, person: AppPerson)
         return null;
       ids.add(answer.card_id);
     }
-    if (file.favorites !== undefined && (!Array.isArray(file.favorites) || !file.favorites.every((id: unknown) => typeof id === 'string')))
-      return null;
+    delete file.favorites;
     if (file.x_sessions !== undefined && (!Array.isArray(file.x_sessions) || !file.x_sessions.every((session: {
       started?: string;
       cards?: unknown[];

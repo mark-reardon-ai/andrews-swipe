@@ -1,4 +1,4 @@
-import { cleanAnswers, actionFor, isAB } from './actions';
+import { cleanAnswers, actionFor } from './actions';
 import type { AppPerson, Deck, SwipeAnswer, SwipeAnswersFile, Sitting } from './types';
 export function buildAnswersFile(deck: Deck, person: AppPerson, answers: SwipeAnswer[], previous?: SwipeAnswersFile | null, sessions?: Sitting[], test = false): SwipeAnswersFile {
   answers = cleanAnswers(answers).map(a => {
@@ -24,7 +24,6 @@ export function buildAnswersFile(deck: Deck, person: AppPerson, answers: SwipeAn
       app_version: '0.1.0',
     },
     answers,
-    favorites: previous?.favorites?.filter(id => answers.some(a => a.card_id === id && a.swipe === 'yes' && deck.cards.some(c => c.id === id && !isAB(c)))) ?? [],
     ...(previous?.x_removed ? { x_removed: previous.x_removed } : {}),
     x_sessions: sessions ?? previous?.x_sessions ?? [],
   };
@@ -50,7 +49,8 @@ export async function shareFile(name: string, content: string, type = 'applicati
 }
 export const exportFilename = (file: SwipeAnswersFile) => `${file.deck_id}.${file.x_joint ? 'both' : file.person}${file.x_test || file.person === 'mark' ? '.TEST' : ''}.json`;
 export function exportAnswers(file: SwipeAnswersFile) {
-  return shareFile(exportFilename(file), JSON.stringify({ ...file, answers: cleanAnswers(file.answers) }, null, 2));
+  const { favorites: _legacyFavorites, ...current } = file;
+  return shareFile(exportFilename(file), JSON.stringify({ ...current, answers: cleanAnswers(file.answers) }, null, 2));
 }
 export function answersCSV(files: SwipeAnswersFile[]): string {
   const rows: unknown[][] = [['question', 'person', 'value', 'strength', 'note', 'at', 'channel', 'recorded_by', 'joint']];

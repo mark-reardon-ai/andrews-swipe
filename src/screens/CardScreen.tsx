@@ -1,6 +1,6 @@
 import { useEffect, useState } from 'react';
 import { copy } from '../copy';
-import { actionsFor, buttonLabel } from '../actions';
+import { actionsFor, buttonLabel, isAB } from '../actions';
 import { imageSrcSet, type AppPerson, type Deck, type SwipeAnswer } from '../types';
 import { personName } from '../compare';
 import SwipeCard, { type Choice } from '../components/SwipeCard';
@@ -42,9 +42,9 @@ export default function CardScreen({ deck, index, size, person, onAnswer, onSwit
     </div>
     <section className="question" aria-live="polite"><h1>{card.question}</h1></section>
     <footer className="answer-footer"><div className="answer-buttons">
-      <button data-testid="btn-left" aria-label={buttonLabel(card, 'left')} className="no" disabled={busy || !!request} onClick={() => setRequest(actions.left)}>{buttonLabel(card, 'left')}</button>
+      <button data-testid="btn-left" aria-label={buttonLabel(card, 'left')} className={isAB(card) ? 'ab-choice' : 'no'} disabled={busy || !!request} onClick={() => setRequest(actions.left)}>{buttonLabel(card, 'left')}</button>
       <button data-testid="btn-undo" aria-label={copy.undo} disabled={!canUndo || busy} onClick={undo}>↶</button>
-      <button data-testid="btn-right" aria-label={buttonLabel(card, 'right')} className="yes" disabled={busy || !!request} onClick={() => setRequest(actions.right)}>{buttonLabel(card, 'right')}</button>
+      <button data-testid="btn-right" aria-label={buttonLabel(card, 'right')} className={isAB(card) ? 'ab-choice' : 'yes'} disabled={busy || !!request} onClick={() => setRequest(actions.right)}>{buttonLabel(card, 'right')}</button>
     </div></footer>
   </div></main>;
 }

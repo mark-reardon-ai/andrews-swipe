@@ -1,4 +1,4 @@
-import { actionsFor, buttonLabel } from '../actions';
+import { actionsFor, buttonLabel, isAB } from '../actions';
 import { copy } from '../copy';
 import { useEffect, useRef } from 'react';
 import type { PointerEvent as ReactPointerEvent } from 'react';
@@ -121,7 +121,7 @@ export default function SwipeCard({ card, underneath, request, onAnswer, onInter
   }
   return <div
     ref={element}
-    className={`swipe-card ${underneath ? 'underneath' : 'top-card'}`}
+    className={`swipe-card ${underneath ? 'underneath' : 'top-card'} ${isAB(card) ? 'ab-card' : ''}`}
     data-testid="swipe-card"
     data-card-id={card.id}
     tabIndex={underneath ? -1 : 0}

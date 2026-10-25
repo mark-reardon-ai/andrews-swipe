@@ -273,7 +273,6 @@
     "wall:DR-cased-opening"
    ],
    "option": "OPT-KIT-C",
-   "gives_up_vs_expansion": "Needs a header and support down to the existing footings; only if no new foundation is needed.",
    "yes": {
     "summary": "Wants the DR/KIT opening: get the engineer to check C."
    },

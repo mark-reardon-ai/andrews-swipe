@@ -1,3 +1,4 @@
+import { copy } from './copy';
 import { useEffect, useState } from 'react';
 import { loadDeck, loadRounds, defaultDeckUrl } from './deck';
 import type { AppPerson, Deck, Rounds } from './types';
@@ -81,17 +82,17 @@ function Kitchen({ data, reload, hash }: {
   if (state.pause)
     return <main className="center-screen screen">
       <span className="house-mark">♥</span>
-      <h1>Nice work!</h1>
-      <p>Take a break: next set whenever you like.</p>
-      <button className="primary" onClick={state.keepGoing}>Keep going</button>
-      <button className="text-button" onClick={state.undo}>↶ Oops, go back</button>
-      <button className="text-button" onClick={() => state.choose(null)}>Switch person</button>
+      <h1>{copy.breakTitle}</h1>
+      <p>{copy.breakMessage}</p>
+      <button className="primary" onClick={state.keepGoing}>{copy.keepGoing}</button>
+      <button className="text-button" onClick={state.undo}>{copy.back}</button>
+      <button className="text-button" onClick={() => state.choose(null)}>{copy.switchPerson}</button>
     </main>;
   const ios = /iPad|iPhone|iPod/.test(navigator.userAgent);
   const standalone = (navigator as Navigator & {
     standalone?: boolean;
   }).standalone || matchMedia('(display-mode: standalone)').matches;
-  const hint = ios && !standalone && !dismissed && !!file?.answers.length ? `Tip: tap Share, then 'Add to Home Screen' to keep this handy.${rounds.answers_endpoint ? ' Your answers sync between visits.' : ' The Home Screen app keeps its own progress.'}` : null;
+  const hint = ios && !standalone && !dismissed && !!file?.answers.length ? copy.homeHint(!!rounds.answers_endpoint) : null;
   return <CardScreen
     deck={deck}
     index={Math.max(0, state.index)}
@@ -163,7 +164,7 @@ export default function App() {
       }
       catch (e) {
         if (!cancelled)
-          setError(e instanceof Error ? e.message : 'Something went wrong loading the pictures.');
+          setError(e instanceof Error ? e.message : copy.loadError);
       }
     }
     void init();
@@ -178,8 +179,8 @@ export default function App() {
   if (!data)
     return <main className="center-screen screen">
       <span className="house-mark">⌂</span>
-      <h1>{error ? 'A little pause' : 'Welcome home'}</h1>
-      <p role="status">{error || 'Getting your kitchen pictures ready…'}</p>{error && <button onClick={() => setGeneration(g => g + 1)}>Try again</button>}</main>;
+      <h1>{error ? copy.pause : copy.welcome}</h1>
+      <p role="status">{error || copy.loading}</p>{error && <button onClick={() => setGeneration(g => g + 1)}>{copy.retry}</button>}</main>;
   return <Kitchen
     key={generation}
     data={data}

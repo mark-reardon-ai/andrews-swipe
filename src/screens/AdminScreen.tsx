@@ -252,6 +252,7 @@ export default function AdminScreen() {
             </summary>
             <p>{card.id} · {sectionOf(card)} · {card.option_tags?.join(', ')}</p>
             {answers.map(a => <p key={a.person}>{personName(a.person)}: {a.note || 'No note'} · Strength: {a.strength ?? '—'} · Dwell: {a.dwell_ms ?? '—'} ms</p>)}
+            {card.gives_up_vs_expansion && <p><strong>Trade-off note (admin only):</strong> {card.gives_up_vs_expansion}</p>}
             {(['yes', 'no'] as const).map(value => <div key={value}>
               <strong>{value}:</strong> {card[value].summary}<p>Eliminates: {card[value].eliminates?.join(', ') || '—'}</p>
               <p>Sets: {JSON.stringify(card[value].sets ?? [])}</p>

@@ -1,3 +1,4 @@
+import { copy } from '../copy';
 import { useEffect, useRef, useState } from 'react';
 import { imageSrcSet, type AppPerson, type Deck, type SwipeAnswer } from '../types';
 import { safeStorage } from '../storage';
@@ -182,12 +183,12 @@ export default function CardScreen({ deck, index, size, person, onAnswer, onNote
         >Tap to zoom</button>}
         {coach && <aside className="coach">
           <span aria-hidden="true">☝</span>
-          <p>Swipe or tap below</p>
+          <p>{copy.coach}</p>
         </aside>}
       </div>
       <section className="question" aria-live="polite">
-        <h1>{card.question}</h1>{(card.detail || card.gives_up_vs_expansion) && <div className="detail-preview">
-          <p>{[card.detail, card.gives_up_vs_expansion].filter(Boolean).join(' ')}</p>
+        <h1>{card.question}</h1>{card.detail && <div className="detail-preview">
+          <p>{card.detail}</p>
           <button onClick={() => setDetailOpen(true)}>More</button>
         </div>}</section>
       <footer className="answer-footer">
@@ -212,7 +213,7 @@ export default function CardScreen({ deck, index, size, person, onAnswer, onNote
 
           >
             <b aria-hidden="true">✕</b>
-            <span>No</span>
+            <span>{copy.no}</span>
           </button>
           <button
             aria-label="Not sure"
@@ -222,7 +223,7 @@ export default function CardScreen({ deck, index, size, person, onAnswer, onNote
 
           >
             <b aria-hidden="true">?</b>
-            <span>Not sure</span>
+            <span>{copy.skip}</span>
           </button>
           <button
             aria-label="Love it"
@@ -250,7 +251,7 @@ export default function CardScreen({ deck, index, size, person, onAnswer, onNote
 
           >
             <b aria-hidden="true">♥</b>
-            <span>Love it</span>
+            <span>{copy.yes}</span>
           </button>
         </div>
       </footer>
@@ -264,10 +265,10 @@ export default function CardScreen({ deck, index, size, person, onAnswer, onNote
         }}
 
       >Note on previous picture</button>}
-      {toast && <aside className="encouragement" role="status">You’re doing great, {name}!</aside>}
+      {toast && <aside className="encouragement" role="status">{copy.encouragement(name)}</aside>}
       {hint && <aside className="home-hint">
         <p>{hint}</p>
-        <button onClick={dismissHint}>Got it</button>
+        <button onClick={dismissHint}>{copy.gotIt}</button>
       </aside>}
     </div>
     {detailOpen && <div className="modal-backdrop">
@@ -280,7 +281,6 @@ export default function CardScreen({ deck, index, size, person, onAnswer, onNote
       >
         <h2 id="detail-title">{card.question}</h2>
         <p>{card.detail}</p>
-        <p>{card.gives_up_vs_expansion}</p>
         <button autoFocus onClick={() => setDetailOpen(false)}>Close</button>
       </section>
     </div>}

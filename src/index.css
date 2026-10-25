@@ -799,29 +799,29 @@ button[aria-pressed="true"] {
   overflow: hidden;
 }
 
-.hero {
-  position: absolute;
-  inset: 0;
-  width: 100%;
-  height: 62%;
-  object-fit: cover;
-  z-index: -2;
+.start > header, .start > .welcome {
+  flex-shrink: 0;
 }
 
-.hero-shade {
-  position: absolute;
-  inset: 0;
-  z-index: -1;
-  background: linear-gradient(#f7f2e7d9, #f7f2e7bb 30%, #f7f2e7 60%);
+.hero {
+  display: block;
+  flex: 0 0 35%;
+  width: calc(100% - 24px);
+  height: 35%;
+  min-height: 0;
+  margin: 12px 12px 0;
+  border: 1px solid #c6c8bd;
+  border-radius: 18px;
+  object-fit: cover;
 }
 
 .start header {
-  padding: 20px 22px 0;
+  padding: 12px 22px 0;
   color: #203747;
 }
 
 .start h1 {
-  font-size: clamp(34px, 9.3vw, 40px);
+  font-size: clamp(30px, 8vw, 36px);
   margin: 12px 0;
 }
 
@@ -834,11 +834,17 @@ button[aria-pressed="true"] {
   margin: 12px 0 0;
 }
 
+.subline {
+  font-size: 17px;
+  line-height: 1.3;
+  margin: 6px 0;
+}
+
 .intro {
   font-size: 17px;
   line-height: 1.3;
   display: -webkit-box;
-  -webkit-line-clamp: 3;
+  -webkit-line-clamp: 2;
   -webkit-box-orient: vertical;
   overflow: hidden;
 }
@@ -852,7 +858,7 @@ button[aria-pressed="true"] {
 
 .welcome {
   margin-top: auto;
-  padding: 0 22px 18px;
+  padding: 0 22px 12px;
 }
 
 .welcome > p {
@@ -869,7 +875,7 @@ button[aria-pressed="true"] {
 .people button {
   justify-content: space-between;
   text-align: left;
-  min-height: 62px;
+  min-height: 56px;
   padding: 10px 12px;
   font-size: 17px;
 }
@@ -986,12 +992,12 @@ button[aria-pressed="true"] {
   font-size: 28px;
 }
 
-.answer-buttons b, .answer-buttons .skip b {
+.answer-buttons b {
   display: flex;
   align-items: center;
   justify-content: center;
-  width: 64px;
-  height: 64px;
+  width: var(--answer-size, 64px);
+  height: var(--answer-size, 64px);
   margin: 0;
   border-radius: 50%;
   font-weight: 400;
@@ -1117,21 +1123,21 @@ summary:focus-visible, input:focus-visible, select:focus-visible, textarea:focus
 }
 
 @media (min-height: 800px) {
-  .start header {
-    padding-top: 40px;
+  .hero {
+    flex-basis: 37%;
+    height: 37%;
   }
   .welcome {
-    padding-bottom: 32px;
+    padding-bottom: 18px;
   }
   .people {
-    gap: 14px;
+    gap: 10px;
   }
   .people button {
-    min-height: 76px;
+    min-height: 64px;
   }
-  .answer-buttons b, .answer-buttons .skip b {
-    width: 72px;
-    height: 72px;
+  .answer-buttons {
+    --answer-size: 72px;
   }
   .answer-buttons button {
     min-height: 94px;
@@ -1162,6 +1168,13 @@ summary:focus-visible, input:focus-visible, select:focus-visible, textarea:focus
 }
 
 .masthead {
+  position: absolute;
+  top: calc(24px + env(safe-area-inset-top));
+  left: 24px;
+  right: 24px;
+  padding: 4px 8px 4px 4px;
+  border-radius: 14px;
+  background: #fffcf5e8;
   display: flex;
   align-items: center;
   gap: 6px;
@@ -1182,12 +1195,11 @@ summary:focus-visible, input:focus-visible, select:focus-visible, textarea:focus
     padding-top: 10px;
   }
   .start h1 {
-    font-size: 34px;
+    font-size: 30px;
     margin: 8px 0;
   }
-  .intro {
-    -webkit-line-clamp: 2;
-    margin: 8px 0;
+  .start .intro {
+    display: none;
   }
   .round-eyebrow {
     margin-top: 8px;
@@ -1202,6 +1214,14 @@ summary:focus-visible, input:focus-visible, select:focus-visible, textarea:focus
     margin-top: 8px;
   }
   .people button {
-    min-height: 60px;
+    min-height: 52px;
   }
+}
+
+/* Keep the middle choice visibly circular and slightly quieter at every size. */
+.answer-buttons .skip b {
+  width: calc(var(--answer-size, 64px) - 8px);
+  height: calc(var(--answer-size, 64px) - 8px);
+  background: #dce4ec;
+  color: #304b63;
 }

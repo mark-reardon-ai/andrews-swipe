@@ -1,3 +1,4 @@
+import { copy } from './copy';
 import type { AppPerson, Deck, SwipeAnswersFile } from './types';
 import { filePerson } from './storage';
 export function compareAnswers(deck: Deck, files: SwipeAnswersFile[]) {
@@ -17,4 +18,4 @@ export function compareAnswers(deck: Deck, files: SwipeAnswersFile[]) {
   });
 }
 export const personName = (person: AppPerson) => person === 'both' ? 'Tom & Jane' : person === 'tom' ? 'Tom' : 'Jane';
-export const answerLabel = (value: string) => value === 'yes' ? 'Love it' : value === 'no' ? 'No' : 'Not sure';
+export const answerLabel = (value: string) => value === 'yes' ? copy.yes : value === 'no' ? copy.no : copy.skip;

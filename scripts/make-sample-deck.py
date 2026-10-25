@@ -51,7 +51,6 @@ cards=[
   question="A wide doorway from the dining room into the kitchen. Do you like seeing through?",
   detail="Option C. This wall probably holds up the house, so it needs a structural engineer before we count on it. "+ILL,
   option_tags=["section:layout","wall:DR-cased-opening"], option="OPT-KIT-C",
-  gives_up_vs_expansion="Needs a header and support down to the existing footings; only if no new foundation is needed.",
   yes={"summary":"Wants the DR/KIT opening: get the engineer to check C."},
   no={"summary":"Keep the DR/KIT wall: drop C.","eliminates":["OPT-KIT-C"]}),
  dict(kind="detail", image=img("B_d_mud-room-entry_photo","Kitchen with a sage-green painted peninsula, warm white cabinets and a wood top"),

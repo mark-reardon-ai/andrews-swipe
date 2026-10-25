@@ -1,3 +1,4 @@
+import { copy } from '../copy';
 import { useEffect, useState } from 'react';
 import type { Deck, SwipeAnswer, SwipeAnswersFile } from '../types';
 import { exportAnswers } from '../export';
@@ -36,10 +37,10 @@ export default function RoundCompleteScreen({ deck, file, files, endpoint, newRo
   const comparison = compareAnswers(deck, files);
   return <main className="summary screen">
     <div className="confetti" aria-hidden="true">{Array.from({ length: 14 }, (_, i) => <span key={i} style={{ left: `${i * 7}%`, animationDelay: `${i * .3}s` }}>{i % 2 ? '♥' : '❧'}</span>)}</div>
-    <p className="eyebrow">A LITTLE CLOSER TO HOME</p>
-    <h1>You did it, {personName(filePerson(file))}!</h1>
-    <p>A lovely start to your new kitchen. Tap a heart to save your favorites.</p>
-    <h2>What you loved</h2>
+    <p className="eyebrow">{copy.completeEyebrow}</p>
+    <h1>{copy.completeTitle(personName(filePerson(file)))}</h1>
+    <p>{copy.completeMessage}</p>
+    <h2>{copy.loved}</h2>
     <div className="loved-grid">{loved.map(answer => {
       const card = deck.cards.find(c => c.id === answer.card_id);
       if (!card)
@@ -59,23 +60,23 @@ export default function RoundCompleteScreen({ deck, file, files, endpoint, newRo
         <p>{card.question}</p>
       </article>;
     })}</div>
-    {!loved.length && <p>No loved pictures this time. That helps Mark too.</p>}
+    {!loved.length && <p>{copy.noLoved}</p>}
     <p>Not for us: {file.answers.filter(a => a.swipe === 'no').length} · Not sure: {file.answers.filter(a => a.swipe === 'skip').length}</p>
     {comparison.some(c => c.conflict) && <section>
-      <h2>Let’s talk about these</h2>
+      <h2>{copy.discuss}</h2>
       <ComparisonList rows={comparison.filter(c => c.conflict)} />
     </section>}
     {comparison.some(c => c.agreedYes) && <section>
-      <h2>You both loved</h2>
+      <h2>{copy.bothLoved}</h2>
       <ComparisonList rows={comparison.filter(c => c.agreedYes)} />
     </section>}
     <div className="actions">
-      <button className="primary" onClick={() => void exportAnswers(file)}>Send my answers to Mark</button>
-      {endpoint && <p role="status">{pending ? 'Waiting to send to Mark…' : 'Already sent to Mark'}</p>}
-      <button onClick={() => setReview(!review)}>Look at my answers again</button>
+      <button className="primary" onClick={() => void exportAnswers(file)}>{copy.send}</button>
+      {endpoint && <p role="status">{pending ? copy.sending : copy.sent}</p>}
+      <button onClick={() => setReview(!review)}>{copy.review}</button>
     </div>
     {review && <section>
-      <h2>Your answers</h2>{deck.cards.map(card => <article className="review-card" key={card.id}>
+      <h2>{copy.yourAnswers}</h2>{deck.cards.map(card => <article className="review-card" key={card.id}>
         <p>{card.question}</p>
         <div className="review-buttons">{(['no', 'skip', 'yes'] as const).map(value => <button
           key={value}
@@ -84,8 +85,8 @@ export default function RoundCompleteScreen({ deck, file, files, endpoint, newRo
 
         >{answerLabel(value)}</button>)}</div>
       </article>)}</section>}
-    {newRound && <button className="primary" onClick={onNew}>A new round is ready!</button>}
-    <p>Mark is putting together the next round. We’ll have it here soon.</p>
-    <button onClick={onSwitch}>Back to start</button>
+    {newRound && <button className="primary" onClick={onNew}>{copy.newRound}</button>}
+    <p>{copy.nextRound}</p>
+    <button onClick={onSwitch}>{copy.backToStart}</button>
   </main>;
 }

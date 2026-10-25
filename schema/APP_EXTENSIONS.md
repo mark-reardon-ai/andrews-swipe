@@ -11,7 +11,7 @@ The official deck and answer schemas are unchanged and permit additional propert
 - Answer `x_round` preserves the round ID. Local keys are `31andrews.swipe.<round>.<deck_id>.<app-person>`; the unscoped adapter also supports the original `31andrews.swipe.<deck_id>.<app-person>` contract.
 - Answer `x_sessions` is an array of `{started: ISO datetime, finished?: ISO datetime, cards: string[]}`. It records each sitting, closes on a session boundary, and starts a new sitting on reload/person change. Top-level session starts at the first answer ever and finishes only when every card has an answer. Undo removes the answer and restores prior session data where available.
 
-- Answer `favorites` contains loved card IDs selected with hearts on the completion screen. Review edits set `revisited: true`.
+- The app never writes `favorites` (no heart/favorite step). Review edits set `revisited: true`.
 
 - Answer `x_removed` maps undone card IDs to ISO timestamps. Local, remote and Apps Script merges suppress answers at or before that timestamp, preventing undo from being resurrected by sync. A newer replacement answer supersedes it.
 
@@ -19,7 +19,7 @@ The official deck and answer schemas are unchanged and permit additional propert
 
 `rounds.schema.json` defines this app-owned format. `public/rounds.json` is fetched without cache, relative to BASE_URL, so the same bookmark follows `current` forever. Round IDs must be unique and `current` must name an entry. `deck` resolves relative to the app base. `published` is an ISO datetime, `status` is open/closed, and `session_size` defaults to 20. A closed entry is historical; publishers should set current to an open round. Empty/omitted `answers_endpoint` means local only. Otherwise supply a deployed Google Apps Script URL. `?deck=<url>` overrides deck selection for testing; `?who=tom|jane|both` bypasses the picker.
 
-Completion checks the manifest every 60 seconds and on focus/visibility changes. A changed current round offers a button; it never discards the previous round's local answers. Completion offers favorites, review, and cross-person comparisons. The admin workshop is at `#/admin`; optional manifest `admin_key` is a casual lock, not security.
+Completion checks the manifest every 60 seconds and on focus/visibility changes. A changed current round offers a button; it never discards the previous round's local answers. Completion shows what you loved, your A/B picks, review, and cross-person comparisons. The admin workshop is at `#/admin`; optional manifest `admin_key` is a casual lock, not security.
 
 ## Storage and hosting
 

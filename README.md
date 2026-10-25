@@ -37,13 +37,19 @@ For optional Google Sheets sync, follow [Apps Script setup](apps-script/README.m
 
 ## GitHub Pages
 
-Enable Pages with **GitHub Actions** as the source. The
-[Pages workflow](.github/workflows/pages.yml) installs with `npm ci`, runs tests,
-builds, uploads `dist`, and deploys on pushes to `main` or manual runs.
-It derives `OG_BASE=https://<user>.github.io/<repo>/` from repository context.
-For a custom domain, change OG_BASE to that absolute site URL, including a
-trailing slash. Vite replaces `%OG_BASE%` in index.html so image and page
-metadata have absolute URLs for iMessage previews. Local builds default to empty.
+Hosted from the `gh-pages` branch of `mark-reardon-ai/andrews-swipe` (public repo, not linked anywhere).
+Deploy with one command from this folder (uses the box's `gh` git login; no tokens in the repo):
+
+    npm run deploy        # = scripts/deploy-gh-pages.sh mark-reardon-ai andrews-swipe
+
+It runs the unit tests, builds with `OG_BASE=https://mark-reardon-ai.github.io/andrews-swipe/`
+(absolute og:image/og:url for iMessage link previews), and force-pushes `dist/` to `gh-pages`.
+Pages source: branch `gh-pages`, folder `/`.
+
+A GitHub Actions alternative is in `docs/pages-workflow.example.yml`. It is not active because
+the box's GitHub token has no `workflow` scope (pushing files under .github/workflows is refused).
+To use it: `gh auth refresh -s workflow`, move it to `.github/workflows/pages.yml`, and set Pages
+source to "GitHub Actions".
 
 Noindex metadata and robots.txt discourage indexing; they do not restrict access.
 Regenerate the Cape house PNG icons with `python3 scripts/make-icons.py`

@@ -1,0 +1,1 @@
+export default function AdminScreen() { return <main className="center-screen screen"><h1>Mark’s workshop</h1><p>The round management view is coming in a later step.</p><a className="button" href="#/">Back to the kitchen</a></main> }

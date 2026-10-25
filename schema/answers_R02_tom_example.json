@@ -1,0 +1,13 @@
+{
+  "$comment": "EXAMPLE ONLY: what the swipe app returns for one person and one deck.",
+  "format": "31andrews.swipe_answers/1",
+  "deck_id": "DECK-R02-v1",
+  "deck_version": 1,
+  "person": "tom",
+  "session": {"started": "2026-10-26T19:00:00-04:00", "finished": "2026-10-26T19:06:00-04:00", "device": "phone", "app_version": "0.1"},
+  "answers": [
+    {"card_id": "SC-R02-001", "swipe": "yes", "at": "2026-10-26T19:00:20-04:00", "dwell_ms": 4200},
+    {"card_id": "SC-R02-002", "swipe": "yes", "strength": 3, "note": "Love the light", "at": "2026-10-26T19:00:41-04:00", "dwell_ms": 9100}
+  ],
+  "favorites": ["SC-R02-002"]
+}

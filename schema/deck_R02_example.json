@@ -1,0 +1,31 @@
+{
+  "$comment": "EXAMPLE ONLY: illustrates the format. Images are not generated yet; ids, tags and wording are placeholders until R2 is generated from firmed measurements.",
+  "format": "31andrews.swipe_deck/1",
+  "deck_id": "DECK-R02-v1",
+  "round": "R02",
+  "version": 1,
+  "created": "2026-10-25T11:30:00-04:00",
+  "realism": "concept",
+  "audience": ["tom", "jane"],
+  "intro": "Round 2: how the kitchen and living room could work. Swipe right on what you'd love to live with.",
+  "generated_from": "sha256:placeholder",
+  "cards": [
+    {"id": "SC-R02-001", "kind": "anchor_now", "order": 1,
+     "image": {"file": "img/SC-R02-001.jpg", "file_b": "img/SC-R02-001-model.png", "alt": "The kitchen today, from the living room doorway: photo and model render", "room": "kitchen", "camera": "CAM-KIT-C1", "realism": "concept",
+               "generator": {"tool": "photo", "references": [{"kind": "photo", "ref": "PH-1-KIT-C1"}, {"kind": "model_render", "ref": "renders/base-v1/CAM-KIT-C1.png"}]}},
+     "question": "Is this how your kitchen looks today?",
+     "yes": {"summary": "The base model matches the room; carry on."},
+     "no": {"summary": "Something's off in the model; Mark re-checks before the next cards count."}},
+    {"id": "SC-R02-002", "kind": "option", "order": 2,
+     "image": {"file": "img/SC-R02-002.png", "alt": "Kitchen opened to the living room, island with two stools", "room": "kitchen", "camera": "CAM-KIT-C1", "realism": "concept",
+               "generator": {"tool": "gemini", "account": "Mark's Gemini Pro (box browser)", "generated_at": "2026-10-25T11:30:00-04:00", "prompt_file": "img/SC-R02-002.prompt.txt",
+                             "references": [{"kind": "photo", "ref": "PH-1-KIT-C1"}, {"kind": "model_render", "ref": "renders/R02/OPT-KIT-A/CAM-KIT-C1.png"}]}},
+     "question": "Open the kitchen to the living room?",
+     "detail": "Needs the wall checked by a structural engineer.",
+     "option_tags": ["wall:open", "layout:island"],
+     "decision": "DEC-LAYOUT-1F", "option": "OPT-KIT-A",
+     "gives_up_vs_expansion": "Placeholder: island size and stool count here vs. what an addition would allow (filled from the R2 option metrics).",
+     "yes": {"summary": "Keep the open-wall layouts; ask the engineer.", "sets": [{"decision": "DEC-LAYOUT-1F", "value": "open_wall_candidates"}]},
+     "no": {"summary": "Keep the wall; drop the open layouts.", "eliminates": ["OPT-KIT-A"]}}
+  ]
+}

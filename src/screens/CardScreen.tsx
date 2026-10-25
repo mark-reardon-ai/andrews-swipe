@@ -1,0 +1,13 @@
+import { useEffect } from 'react'
+import { imageSrcSet, sectionOf, type AppPerson, type Card, type Deck, type SwipeAnswer } from '../types'
+// Step 2 adds gesture recognition here; the answer callbacks already share one path.
+export function SwipeCard({card}: {card: Card}) { return <div className="swipe-card"><img src={card.image.file} srcSet={imageSrcSet(card.image)} sizes="100vw" alt={card.image.alt} style={{objectFit: card.image.fit ?? 'cover'}} fetchPriority="high"/></div> }
+export default function CardScreen({deck,index,size,person,onAnswer,onSwitch,onUndo,canUndo,hint,dismissHint}: {deck: Deck; index: number; size: number; person: AppPerson; onAnswer: (s: SwipeAnswer['swipe']) => void; onSwitch: () => void; onUndo: () => void; canUndo: boolean; hint: string | null; dismissHint: () => void}) {
+  const card = deck.cards[index]; const offset = Math.floor(index / size) * size; const total = Math.min(size,deck.cards.length-offset)
+  useEffect(() => {
+    const prevent = (e: Event) => e.preventDefault(); document.body.classList.add('in-card'); document.addEventListener('gesturestart',prevent,{passive:false})
+    return () => { document.body.classList.remove('in-card'); document.removeEventListener('gesturestart',prevent) }
+  },[])
+  useEffect(() => { deck.cards.slice(index+1,index+3).forEach(c => { const img = new Image(); img.sizes = '100vw'; img.srcset = imageSrcSet(c.image) ?? ''; img.src = c.image.file }) },[deck,index])
+  return <main className="card-screen screen"><header className="card-top"><span>{person === 'both' ? 'Tom & Jane' : person === 'tom' ? 'Tom' : 'Jane'}’s choices</span><button className="text-button" onClick={onSwitch}>Switch person</button></header><SwipeCard card={card}/><section className="question"><div className="progress"><span>{sectionOf(card).replaceAll('_',' ')}</span><span>{index-offset+1} of {total}</span></div><div className="dots" aria-hidden="true">{Array.from({length:total},(_,i) => <i key={i} className={i <= index-offset ? 'filled' : ''}/>)}</div><h1>{card.question}</h1>{card.detail && <p>{card.detail}</p>}{card.gives_up_vs_expansion && <p>{card.gives_up_vs_expansion}</p>}</section><footer className="answer-footer"><div className="answer-buttons"><button className="no" onClick={() => onAnswer('no')}>✕<span>No</span></button><button className="skip" onClick={() => onAnswer('skip')}>?<span>Not sure</span></button><button className="yes" onClick={() => onAnswer('yes')}>♥<span>Yes, love it!</span></button></div><button className="text-button undo" disabled={!canUndo} onClick={onUndo}>↶ Oops, go back</button></footer>{hint && <aside className="home-hint"><p>{hint}</p><button onClick={dismissHint}>Got it</button></aside>}</main>
+}

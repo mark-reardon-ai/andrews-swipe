@@ -1,16 +1,16 @@
 {
  "$comment": "SAMPLE CONTENT for app v0: built from the round-1 renders; questions are placeholders for Mark to edit.",
  "format": "31andrews.swipe_deck/1",
- "deck_id": "DECK-R01-SAMPLE-v1",
+ "deck_id": "DECK-R01-SAMPLE-v2",
  "round": "R01",
- "version": 1,
+ "version": 2,
  "created": "2026-10-25T11:30:00-04:00",
  "realism": "concept",
  "audience": [
   "tom",
   "jane"
  ],
- "intro": "Round 1 (sample): how the new kitchen could work. Swipe right on what you'd love to live with.",
+ "intro": "Swipe right if you love it.",
  "cards": [
   {
    "id": "SC-R01-001",
@@ -35,8 +35,7 @@
      ]
     }
    },
-   "question": "What if the wall to the kitchen came out? Would you love walking in to this?",
-   "detail": "Standing at the front of the living room, looking back toward the kitchen and yard. Sample round: an illustrative mockup, not the final design.",
+   "question": "Open wall to the kitchen?",
    "option_tags": [
     "section:layout",
     "wall:open"
@@ -57,10 +56,10 @@
   {
    "id": "SC-R01-002",
    "order": 2,
-   "kind": "option",
+   "kind": "compare",
    "image": {
     "file": "img/B_b_Tom-seat-peninsula_photo.jpg",
-    "alt": "Seated view from the peninsula stool toward the sink and range",
+    "alt": "Top: seat at a peninsula facing the sink. Bottom: seat at an island facing the windows",
     "room": "kitchen",
     "realism": "concept",
     "x_webp": {
@@ -75,21 +74,27 @@
        "ref": "design/round1/renders/B_b_Tom-seat-peninsula.png"
       }
      ]
+    },
+    "file_b": "img/C_b_Tom-seat-island_photo.jpg",
+    "x_webp_b": {
+     "720": "img/C_b_Tom-seat-island_photo-720.webp",
+     "1280": "img/C_b_Tom-seat-island_photo-1280.webp"
     }
    },
-   "question": "Tom's seat at the counter, facing the cook. Would you love sitting here while Jane cooks?",
-   "detail": "This is the view from Tom's stool in Option B. Sample round: an illustrative mockup, not the final design.",
+   "question": "Counter seat or island seat?",
+   "x_ab": {
+    "left": "Counter",
+    "right": "Island"
+   },
    "option_tags": [
     "section:layout",
-    "layout:peninsula",
     "seat:faces-cook"
    ],
-   "option": "OPT-KIT-B",
    "yes": {
-    "summary": "Facing the cook matters: favors B (peninsula) or C (island), not A."
+    "summary": "Picked the island seat (Option C): keep C if the engineer clears the bearing wall."
    },
    "no": {
-    "summary": "The peninsula seat doesn't appeal: look harder at C's island seat or A."
+    "summary": "Picked the peninsula counter seat (Option B): B's peninsula is the lead."
    }
   },
   {
@@ -115,8 +120,7 @@
      ]
     }
    },
-   "question": "Would you like to see the living room and Tom while you're at the sink?",
-   "detail": "From the cook's spot, looking back into the living room. Sample round: an illustrative mockup, not the final design.",
+   "question": "See the living room from the sink?",
    "option_tags": [
     "section:layout",
     "sightline:cook-to-LR"
@@ -131,6 +135,189 @@
   {
    "id": "SC-R01-004",
    "order": 4,
+   "kind": "option",
+   "image": {
+    "file": "img/C_a_LR-entry-to-kitchen_photo.jpg",
+    "alt": "Living room with a big glass slider to the back yard",
+    "room": "kitchen",
+    "realism": "concept",
+    "x_webp": {
+     "720": "img/C_a_LR-entry-to-kitchen_photo-720.webp",
+     "1280": "img/C_a_LR-entry-to-kitchen_photo-1280.webp"
+    },
+    "generator": {
+     "tool": "other",
+     "references": [
+      {
+       "kind": "model_render",
+       "ref": "design/round1/renders/C_a_LR-entry-to-kitchen.png"
+      }
+     ]
+    }
+   },
+   "question": "A big glass door to the yard?",
+   "option_tags": [
+    "section:windows",
+    "glazing:6ft-slider"
+   ],
+   "yes": {
+    "summary": "Keep the 6' slider in the mix (also price B's layout with A's slider)."
+   },
+   "no": {
+    "summary": "Prefer windows or the box-bay seat over a slider."
+   }
+  },
+  {
+   "id": "SC-R01-005",
+   "order": 5,
+   "kind": "option",
+   "image": {
+    "file": "img/C_d_DR-through-opening_photo.jpg",
+    "alt": "From the dining room through a wide cased opening into the kitchen",
+    "room": "kitchen",
+    "realism": "concept",
+    "x_webp": {
+     "720": "img/C_d_DR-through-opening_photo-720.webp",
+     "1280": "img/C_d_DR-through-opening_photo-1280.webp"
+    },
+    "generator": {
+     "tool": "other",
+     "references": [
+      {
+       "kind": "model_render",
+       "ref": "design/round1/renders/C_d_DR-through-opening.png"
+      }
+     ]
+    }
+   },
+   "question": "Wide doorway from the dining room?",
+   "option_tags": [
+    "section:layout",
+    "wall:DR-cased-opening"
+   ],
+   "option": "OPT-KIT-C",
+   "yes": {
+    "summary": "Wants the DR/KIT opening: get the engineer to check C."
+   },
+   "no": {
+    "summary": "Keep the DR/KIT wall: drop C.",
+    "eliminates": [
+     "OPT-KIT-C"
+    ]
+   }
+  },
+  {
+   "id": "SC-R01-006",
+   "order": 6,
+   "kind": "detail",
+   "image": {
+    "file": "img/B_d_mud-room-entry_photo.jpg",
+    "alt": "Kitchen with a sage-green painted peninsula, warm white cabinets and a wood top",
+    "room": "kitchen",
+    "realism": "concept",
+    "x_webp": {
+     "720": "img/B_d_mud-room-entry_photo-720.webp",
+     "1280": "img/B_d_mud-room-entry_photo-1280.webp"
+    },
+    "generator": {
+     "tool": "other",
+     "references": [
+      {
+       "kind": "model_render",
+       "ref": "design/round1/renders/B_d_mud-room-entry.png"
+      }
+     ]
+    }
+   },
+   "question": "Sage green with a warm wood top?",
+   "option_tags": [
+    "section:colors",
+    "paint:sage-island",
+    "paint:warm-white-perimeter",
+    "top:wood-island"
+   ],
+   "yes": {
+    "summary": "Sage island + warm white perimeter + wood top are in the running."
+   },
+   "no": {
+    "summary": "Try other island colors next round: slate blue, oxblood, deep green-gray."
+   }
+  },
+  {
+   "id": "SC-R01-007",
+   "order": 7,
+   "kind": "detail",
+   "image": {
+    "file": "img/B_b_Tom-seat-peninsula_photo.jpg",
+    "alt": "Dark stone counters with white subway tile and a white farmhouse sink",
+    "room": "kitchen",
+    "realism": "concept",
+    "x_webp": {
+     "720": "img/B_b_Tom-seat-peninsula_photo-720.webp",
+     "1280": "img/B_b_Tom-seat-peninsula_photo-1280.webp"
+    },
+    "generator": {
+     "tool": "other",
+     "references": [
+      {
+       "kind": "model_render",
+       "ref": "design/round1/renders/B_b_Tom-seat-peninsula.png"
+      }
+     ]
+    }
+   },
+   "question": "Dark stone counters, white tile?",
+   "option_tags": [
+    "section:textures",
+    "counter:dark-honed",
+    "backsplash:white-subway"
+   ],
+   "yes": {
+    "summary": "Dark honed counters (soapstone/granite/matte quartz) + white subway tile."
+   },
+   "no": {
+    "summary": "Show lighter counters next round."
+   }
+  },
+  {
+   "id": "SC-R01-008",
+   "order": 8,
+   "kind": "detail",
+   "image": {
+    "file": "img/B_c_cook-to-LR_photo.jpg",
+    "alt": "Two brass and glass schoolhouse pendant lights over the counter",
+    "room": "kitchen",
+    "realism": "concept",
+    "x_webp": {
+     "720": "img/B_c_cook-to-LR_photo-720.webp",
+     "1280": "img/B_c_cook-to-LR_photo-1280.webp"
+    },
+    "generator": {
+     "tool": "other",
+     "references": [
+      {
+       "kind": "model_render",
+       "ref": "design/round1/renders/B_c_cook-to-LR.png"
+      }
+     ]
+    }
+   },
+   "question": "Brass schoolhouse lights?",
+   "option_tags": [
+    "section:lighting",
+    "light:schoolhouse-pendant",
+    "metal:brass"
+   ],
+   "yes": {
+    "summary": "Schoolhouse pendants and brass finishes."
+   },
+   "no": {
+    "summary": "Try other light styles and metals (nickel, black) next round."
+   }
+  },
+  {
+   "id": "SC-R01-009",
+   "order": 9,
    "kind": "compare",
    "image": {
     "file": "img/B_a_LR-entry-to-kitchen.jpg",
@@ -156,248 +343,25 @@
      "1280": "img/B_a_LR-entry-to-kitchen_photo-1280.webp"
     }
    },
-   "question": "Same room, two ways. Is the photo-style picture (bottom) easier to imagine living in?",
-   "detail": "Top: the accurate computer drawing. Bottom: a photo-style pass over it; small details may differ.",
+   "question": "Which is easier to picture?",
+   "x_ab": {
+    "left": "Drawing",
+    "right": "Photo"
+   },
    "option_tags": [
     "section:how-we-show-it",
     "realism:photo-style"
    ],
    "yes": {
-    "summary": "Lead with photo-style mockups in later rounds (keep the accurate render one tap away)."
+    "summary": "Photo-style is easier: lead with photo-style mockups (keep the accurate render one tap away)."
    },
    "no": {
     "summary": "The plain renders read fine; photo-style passes are optional."
    }
   },
   {
-   "id": "SC-R01-005",
-   "order": 5,
-   "kind": "option",
-   "image": {
-    "file": "img/C_a_LR-entry-to-kitchen_photo.jpg",
-    "alt": "Living room with a big glass slider to the back yard",
-    "room": "kitchen",
-    "realism": "concept",
-    "x_webp": {
-     "720": "img/C_a_LR-entry-to-kitchen_photo-720.webp",
-     "1280": "img/C_a_LR-entry-to-kitchen_photo-1280.webp"
-    },
-    "generator": {
-     "tool": "other",
-     "references": [
-      {
-       "kind": "model_render",
-       "ref": "design/round1/renders/C_a_LR-entry-to-kitchen.png"
-      }
-     ]
-    }
-   },
-   "question": "A big glass sliding door out to the yard. Love the extra light?",
-   "detail": "Option C (and A) put a 6-foot slider in the back wall. Today the back wall has about 5'8\" of windows. Sample round: an illustrative mockup, not the final design.",
-   "option_tags": [
-    "section:windows",
-    "glazing:6ft-slider"
-   ],
-   "yes": {
-    "summary": "Keep the 6' slider in the mix (also price B's layout with A's slider)."
-   },
-   "no": {
-    "summary": "Prefer windows or the box-bay seat over a slider."
-   }
-  },
-  {
-   "id": "SC-R01-006",
-   "order": 6,
-   "kind": "option",
-   "image": {
-    "file": "img/C_b_Tom-seat-island_photo.jpg",
-    "alt": "Seated view from an island stool toward the windows and sink",
-    "room": "kitchen",
-    "realism": "concept",
-    "x_webp": {
-     "720": "img/C_b_Tom-seat-island_photo-720.webp",
-     "1280": "img/C_b_Tom-seat-island_photo-1280.webp"
-    },
-    "generator": {
-     "tool": "other",
-     "references": [
-      {
-       "kind": "model_render",
-       "ref": "design/round1/renders/C_b_Tom-seat-island.png"
-      }
-     ]
-    }
-   },
-   "question": "An island seat looking out at the windows and the yard. Would you love this spot?",
-   "detail": "Option C: Tom faces Jane and the back windows. Sample round: an illustrative mockup, not the final design.",
-   "option_tags": [
-    "section:layout",
-    "layout:island",
-    "seat:faces-cook"
-   ],
-   "option": "OPT-KIT-C",
-   "yes": {
-    "summary": "Island seat appeals: keep C if the engineer clears the bearing wall with no new footings."
-   },
-   "no": {
-    "summary": "Island seat doesn't appeal: B's peninsula is the lead."
-   }
-  },
-  {
-   "id": "SC-R01-007",
-   "order": 7,
-   "kind": "option",
-   "image": {
-    "file": "img/C_d_DR-through-opening_photo.jpg",
-    "alt": "From the dining room through a wide cased opening into the kitchen",
-    "room": "kitchen",
-    "realism": "concept",
-    "x_webp": {
-     "720": "img/C_d_DR-through-opening_photo-720.webp",
-     "1280": "img/C_d_DR-through-opening_photo-1280.webp"
-    },
-    "generator": {
-     "tool": "other",
-     "references": [
-      {
-       "kind": "model_render",
-       "ref": "design/round1/renders/C_d_DR-through-opening.png"
-      }
-     ]
-    }
-   },
-   "question": "A wide doorway from the dining room into the kitchen. Do you like seeing through?",
-   "detail": "Option C. This wall probably holds up the house, so it needs a structural engineer before we count on it. Sample round: an illustrative mockup, not the final design.",
-   "option_tags": [
-    "section:layout",
-    "wall:DR-cased-opening"
-   ],
-   "option": "OPT-KIT-C",
-   "yes": {
-    "summary": "Wants the DR/KIT opening: get the engineer to check C."
-   },
-   "no": {
-    "summary": "Keep the DR/KIT wall: drop C.",
-    "eliminates": [
-     "OPT-KIT-C"
-    ]
-   }
-  },
-  {
-   "id": "SC-R01-008",
-   "order": 8,
-   "kind": "detail",
-   "image": {
-    "file": "img/B_d_mud-room-entry_photo.jpg",
-    "alt": "Kitchen with a sage-green painted peninsula, warm white cabinets and a wood top",
-    "room": "kitchen",
-    "realism": "concept",
-    "x_webp": {
-     "720": "img/B_d_mud-room-entry_photo-720.webp",
-     "1280": "img/B_d_mud-room-entry_photo-1280.webp"
-    },
-    "generator": {
-     "tool": "other",
-     "references": [
-      {
-       "kind": "model_render",
-       "ref": "design/round1/renders/B_d_mud-room-entry.png"
-      }
-     ]
-    }
-   },
-   "question": "A sage-green island with a warm wood top and creamy white cabinets. Your colors?",
-   "detail": "Colors are just a starting idea. Sample round: an illustrative mockup, not the final design.",
-   "option_tags": [
-    "section:colors",
-    "paint:sage-island",
-    "paint:warm-white-perimeter",
-    "top:wood-island"
-   ],
-   "yes": {
-    "summary": "Sage island + warm white perimeter + wood top are in the running."
-   },
-   "no": {
-    "summary": "Try other island colors next round: slate blue, oxblood, deep green-gray."
-   }
-  },
-  {
-   "id": "SC-R01-009",
-   "order": 9,
-   "kind": "detail",
-   "image": {
-    "file": "img/B_b_Tom-seat-peninsula_photo.jpg",
-    "alt": "Dark stone counters with white subway tile and a white farmhouse sink",
-    "room": "kitchen",
-    "realism": "concept",
-    "x_webp": {
-     "720": "img/B_b_Tom-seat-peninsula_photo-720.webp",
-     "1280": "img/B_b_Tom-seat-peninsula_photo-1280.webp"
-    },
-    "generator": {
-     "tool": "other",
-     "references": [
-      {
-       "kind": "model_render",
-       "ref": "design/round1/renders/B_b_Tom-seat-peninsula.png"
-      }
-     ]
-    }
-   },
-   "question": "Dark, soft-looking stone counters with white tile behind. Is this your style?",
-   "detail": "Like honed soapstone, an old New England favorite that darkens with age. Sample round: an illustrative mockup, not the final design.",
-   "option_tags": [
-    "section:textures",
-    "counter:dark-honed",
-    "backsplash:white-subway"
-   ],
-   "yes": {
-    "summary": "Dark honed counters (soapstone/granite/matte quartz) + white subway tile."
-   },
-   "no": {
-    "summary": "Show lighter counters next round."
-   }
-  },
-  {
    "id": "SC-R01-010",
    "order": 10,
-   "kind": "detail",
-   "image": {
-    "file": "img/B_c_cook-to-LR_photo.jpg",
-    "alt": "Two brass and glass schoolhouse pendant lights over the counter",
-    "room": "kitchen",
-    "realism": "concept",
-    "x_webp": {
-     "720": "img/B_c_cook-to-LR_photo-720.webp",
-     "1280": "img/B_c_cook-to-LR_photo-1280.webp"
-    },
-    "generator": {
-     "tool": "other",
-     "references": [
-      {
-       "kind": "model_render",
-       "ref": "design/round1/renders/B_c_cook-to-LR.png"
-      }
-     ]
-    }
-   },
-   "question": "Old-fashioned glass and brass lights over the counter. Do you love them?",
-   "detail": "Sample round: an illustrative mockup, not the final design.",
-   "option_tags": [
-    "section:lighting",
-    "light:schoolhouse-pendant",
-    "metal:brass"
-   ],
-   "yes": {
-    "summary": "Schoolhouse pendants and brass finishes."
-   },
-   "no": {
-    "summary": "Try other light styles and metals (nickel, black) next round."
-   }
-  },
-  {
-   "id": "SC-R01-011",
-   "order": 11,
    "kind": "option",
    "image": {
     "file": "img/plan_option-B.jpg",
@@ -414,8 +378,7 @@
     },
     "fit": "contain"
    },
-   "question": "Option B on paper: galley kitchen, a counter for Tom, and a window seat. Does it feel right?",
-   "detail": "Mark's current favorite: Tom faces Jane, lots of cabinets, least structural work. Tap the plan to zoom.",
+   "question": "Plan B: does it feel right?",
    "option_tags": [
     "section:layout",
     "layout:peninsula",
@@ -436,43 +399,6 @@
     "summary": "B is not the lead; ask what's off.",
     "eliminates": [
      "OPT-KIT-B"
-    ]
-   }
-  },
-  {
-   "id": "SC-R01-012",
-   "order": 12,
-   "kind": "option",
-   "image": {
-    "file": "img/plan_option-A.jpg",
-    "alt": "Floor plan of Option A: galley kitchen with an island in the old living room",
-    "room": "kitchen",
-    "realism": "concept",
-    "x_webp": {
-     "900": "img/plan_option-A-900.webp",
-     "1600": "img/plan_option-A-1600.webp"
-    },
-    "generator": {
-     "tool": "other",
-     "references": []
-    },
-    "fit": "contain"
-   },
-   "question": "Option A: the most cupboards and glass, but Tom's seat faces the yard, away from Jane. Still interested?",
-   "detail": "Tap the plan to zoom.",
-   "option_tags": [
-    "section:layout",
-    "layout:island-in-LR",
-    "seat:faces-yard"
-   ],
-   "option": "OPT-KIT-A",
-   "yes": {
-    "summary": "Keep A alive (storage and glass win)."
-   },
-   "no": {
-    "summary": "Drop A.",
-    "eliminates": [
-     "OPT-KIT-A"
     ]
    }
   }

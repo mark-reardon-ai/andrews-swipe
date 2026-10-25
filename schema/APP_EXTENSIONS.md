@@ -25,7 +25,7 @@ Completion checks the manifest every 60 seconds and on focus/visibility changes.
 
 CompositeStore writes local first, then queues remote writes. AppsScriptStore keeps the latest whole file per deck/person in a durable localStorage outbox, retries on next answer/online/focus/visibility, and merges remote and local answers by newest `at`. Remote clear only clears pending sends; it does not delete published sheet rows. Every localStorage operation uses a memory fallback. If browser storage is unavailable and the device is offline, memory lasts only for this page session; export answers before leaving. No browser app can guarantee durability in that case.
 
-Deploy the static build in any subfolder. Replace relative Open Graph/Twitter image URLs with absolute hosting URLs before sharing. SVG icons are provided now; use scripts/make-icons.mjs as the optional starting point for PNG icon generation later. No service worker or offline image cache is installed.
+Deploy the static build in any subfolder. Set OG_BASE to the absolute hosting URL (including its trailing slash) at build time for Open Graph/Twitter previews. PNG icons are generated with Python Pillow using scripts/make-icons.py. No service worker or offline image cache is installed.
 
 ## Workshop exports
 

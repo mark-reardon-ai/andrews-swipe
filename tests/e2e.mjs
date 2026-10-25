@@ -82,7 +82,7 @@ for (const name of PHONES) {
   await page.screenshot({ path: `${OUT}/${slug}_5-complete-tom-conflicts.png` })
   await page.screenshot({ path: `${OUT}/${slug}_5b-complete-tom-full.png`, fullPage: true })
   check(await page.getByText(/talk about/i).first().isVisible().catch(() => false), `${name}: "talk about" section visible`)
-  await page.goto(BASE + '#/admin'); await page.waitForTimeout(1200)
+  await page.goto(BASE + '?key=cape1941#/admin'); await page.waitForTimeout(1200)
   await page.screenshot({ path: `${OUT}/${slug}_6-admin.png` })
   const adminH = await page.evaluate(() => document.documentElement.scrollHeight)
   console.log(`INFO  ${name}: admin page height ${adminH}px`)

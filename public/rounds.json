@@ -1,1 +1,16 @@
-{"format":"31andrews.swipe_rounds/1","current":"R01","answers_endpoint":"","rounds":[{"round":"R01","deck":"decks/R01-sample/deck.json","title":"Round 1: The kitchen layout","session_size":20,"status":"open","published":"2026-10-25T12:00:00Z"}]}
+{
+  "format": "31andrews.swipe_rounds/1",
+  "current": "R01",
+  "answers_endpoint": "",
+  "rounds": [
+    {
+      "round": "R01",
+      "deck": "decks/R01-sample/deck.json",
+      "title": "Round 1: The kitchen layout",
+      "session_size": 20,
+      "status": "open",
+      "published": "2026-10-25T12:00:00Z"
+    }
+  ],
+  "admin_key": "cape1941"
+}

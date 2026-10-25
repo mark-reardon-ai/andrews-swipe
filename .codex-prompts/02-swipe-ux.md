@@ -21,3 +21,5 @@ The sample deck public/decks/R01-sample/deck.json is now real (12 cards; card 4 
 7. Performance: only top 2 cards in the DOM; images use srcset from image.x_webp with sizes="100vw", decoding="async", fetchpriority="high" on the top card; preload next 2. Avoid layout shift (reserve image area). Animations only on transform/opacity.
 
 Make sure answers still record dwell_ms, at, revisited (true when re-answered after undo), notes, strength, and persist through the store after every answer. Update/add vitest unit tests for the gesture threshold logic (extract a pure function classifySwipe(dx, dy, vx, vy, width, height) -> 'yes'|'no'|'skip'|null). Finish by running `npm run build` and `npm test` and fix all errors until both pass. Summarize what you changed.
+
+NOTE: `npm run build` currently fails because a test casts the new sample deck JSON to Card types (x_webp record typing). Fix that properly (e.g. cast via unknown, or exclude tests from the app tsconfig) as part of this step.

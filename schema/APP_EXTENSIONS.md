@@ -3,6 +3,7 @@
 The official deck and answer schemas are unchanged and permit additional properties.
 
 - `card.image.x_webp?: Record<string,string>` maps positive pixel widths to paths relative to the deck (for example `{"720":"img/foo-720.webp"}`). The app resolves these into `srcset`, uses `sizes="100vw"`, and retains `image.file` as fallback.
+- `card.image.x_webp_b?: Record<string,string>` supplies responsive WebP paths for `image.file_b`, using the same width keys and deck-relative resolution as `x_webp`.
 - `card.image.fit?: "cover" | "contain"` defaults to cover. Drawings and plans should use contain.
 - A card's section is the first nonempty `section:<name>` option tag, falling back to `kind`.
 - Optional deck `session_size` is a positive integer fallback; the manifest's session size takes precedence, then 20.
@@ -16,7 +17,7 @@ The official deck and answer schemas are unchanged and permit additional propert
 
 `rounds.schema.json` defines this app-owned format. `public/rounds.json` is fetched without cache, relative to BASE_URL, so the same bookmark follows `current` forever. Round IDs must be unique and `current` must name an entry. `deck` resolves relative to the app base. `published` is an ISO datetime, `status` is open/closed, and `session_size` defaults to 20. A closed entry is historical; publishers should set current to an open round. Empty/omitted `answers_endpoint` means local only. Otherwise supply a deployed Google Apps Script URL. `?deck=<url>` overrides deck selection for testing; `?who=tom|jane|both` bypasses the picker.
 
-Completion checks the manifest every 60 seconds and on focus/visibility changes. A changed current round offers a button; it never discards the previous round's local answers. Loved-card summary, gesture interaction and admin tools have explicit placeholders for later steps.
+Completion checks the manifest every 60 seconds and on focus/visibility changes. A changed current round offers a button; it never discards the previous round's local answers. Loved-card summary and admin tools have explicit placeholders for later steps.
 
 ## Storage and hosting
 

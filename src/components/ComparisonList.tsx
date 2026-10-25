@@ -1,4 +1,4 @@
-import { answerLabel, personName, type compareAnswers } from '../compare';
+import { conflictText, type compareAnswers } from '../compare';
 export default function ComparisonList({ rows }: {
   rows: ReturnType<typeof compareAnswers>;
 }) {
@@ -10,6 +10,6 @@ export default function ComparisonList({ rows }: {
 
     />
     <div>
-      <p>{card.question}</p>{answers.map(a => <span className={`chip ${a.swipe}`} key={a.person}>{personName(a.person)}: {answerLabel(a.swipe)}</span>)}</div>
+      <p>{card.question}</p><span>{conflictText(card, answers)}</span></div>
   </article>)}</div>;
 }

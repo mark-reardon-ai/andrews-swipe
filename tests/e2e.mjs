@@ -42,34 +42,49 @@ for (const name of PHONES) {
   let a = await answersOf(page, 'jane')
   check(a.some(x => x.card_id === c1 && x.swipe === 'yes'), `${name}: right swipe on ${c1} = yes`)
   const c2 = await cardId(page); check(c2 && c2 !== c1, `${name}: next card shown (${c2})`)
+  await page.screenshot({ path: `${OUT}/${slug}_2a-ab-card-first.png` })
   await drag(page, -vw * 0.6, 0)
   a = await answersOf(page, 'jane'); check(a.some(x => x.card_id === c2 && x.swipe === 'no'), `${name}: left swipe on ${c2} = no`)
+  // card 2 is an A/B pick: left = top image (swipe "no", x_pick "a")
+  a = await answersOf(page, 'jane'); check(a.find(x => x.card_id === c2)?.x_pick === 'a', `${name}: A/B left swipe stores x_pick a`)
   const c3 = await cardId(page)
+  // vertical drag does nothing (no "not sure")
   await drag(page, 0, -devices[name].viewport.height * 0.45)
-  a = await answersOf(page, 'jane'); check(a.some(x => x.card_id === c3 && x.swipe === 'skip'), `${name}: up swipe on ${c3} = skip`)
+  check((await cardId(page)) === c3 && (await answersOf(page, 'jane')).length === 2, `${name}: up swipe on ${c3} springs back, no answer`)
   // small drag springs back without answering
-  const c4 = await cardId(page); const before = (await answersOf(page, 'jane')).length
   await drag(page, 25, 5)
-  check((await answersOf(page, 'jane')).length === before && (await cardId(page)) === c4, `${name}: small drag springs back`)
-  // undo
-  await page.getByRole('button', { name: /back|undo/i }).first().click(); await page.waitForTimeout(600)
+  check((await answersOf(page, 'jane')).length === 2 && (await cardId(page)) === c3, `${name}: small drag springs back`)
+  await drag(page, vw * 0.6, 0)
+  const before = (await answersOf(page, 'jane')).length
+  await page.getByTestId('btn-undo').click(); await page.waitForTimeout(600)
   check((await cardId(page)) === c3 && (await answersOf(page, 'jane')).length === before - 1, `${name}: undo returns to ${c3}`)
-  // buttons for the rest, alternating
-  const pattern = [/love it/i, /^no$|^no\b(?! ?thanks)/i, /not sure/i]
+  // only two answer actions on screen; no extra options
+  const bodyText = await page.locator('body').innerText()
+  check(!/not sure|add a note|your note|\bmore\b/i.test(bodyText), `${name}: no Not sure / note / More on card screen`)
+  check(await page.getByTestId('btn-left').isVisible() && await page.getByTestId('btn-right').isVisible(), `${name}: left and right buttons visible`)
+  const cb = await page.locator('[data-testid="swipe-card"]:not([aria-hidden])').first().boundingBox()
+  const frac = cb.height / devices[name].viewport.height
+  console.log(`INFO  ${name}: card image area ${(frac * 100).toFixed(0)}% of visible height`)
+  check(frac >= 0.6, `${name}: image dominates (>= 60% of height)`)
+  // buttons for the rest, alternating right/left
+  let shotAB = false
   for (let i = 0; i < 30; i++) {
     const keep = page.getByRole('button', { name: /keep going/i })
     if (await keep.isVisible().catch(() => false)) { await keep.click(); await page.waitForTimeout(400) }
     if (!(await page.locator('[data-testid="swipe-card"]:not([aria-hidden])').count())) break
     const id = await cardId(page)
-    await page.getByRole('button', { name: pattern[i % 3] }).last().click(); await page.waitForTimeout(650)
-    if (i === 0) { a = await answersOf(page, 'jane'); check(a.some(x => x.card_id === id && x.swipe === 'yes'), `${name}: Love-it button on ${id} = yes`) }
+    if (!shotAB && /Photo/.test(await page.getByTestId('btn-right').innerText())) { await page.screenshot({ path: `${OUT}/${slug}_2b-ab-card.png` }); shotAB = true }
+    await page.getByTestId(i % 2 ? 'btn-left' : 'btn-right').click(); await page.waitForTimeout(650)
+    if (i === 0) { a = await answersOf(page, 'jane'); check(a.some(x => x.card_id === id && x.swipe === 'yes'), `${name}: right button on ${id} = yes`) }
   }
+  a = await answersOf(page, 'jane')
+  check(a.every(x => ['yes', 'no'].includes(x.swipe) && x.note === undefined && x.strength === undefined), `${name}: answers are only yes/no, no notes/strength`)
   await page.waitForTimeout(800)
   await page.screenshot({ path: `${OUT}/${slug}_4-complete-jane.png`, fullPage: false })
-  a = await answersOf(page, 'jane'); check(a.length === 12, `${name}: Jane answered all 12 (got ${a.length})`)
+  a = await answersOf(page, 'jane'); check(a.length === 10, `${name}: Jane answered all 10 (got ${a.length})`)
   // persistence across reload
   await page.reload(); await page.waitForTimeout(800)
-  check((await answersOf(page, 'jane')).length === 12, `${name}: answers survive reload`)
+  check((await answersOf(page, 'jane')).length === 10, `${name}: answers survive reload`)
   // Tom via per-person link, answer everything No (to create conflicts)
   await page.goto(BASE + '?who=tom'); await page.waitForTimeout(800)
   for (let i = 0; i < 30; i++) {
@@ -78,7 +93,7 @@ for (const name of PHONES) {
     if (!(await page.locator('[data-testid="swipe-card"]:not([aria-hidden])').count())) break
     await page.keyboard.press('ArrowLeft'); await page.waitForTimeout(600)
   }
-  check((await answersOf(page, 'tom')).length === 12, `${name}: ?who=tom + keyboard answered 12`)
+  check((await answersOf(page, 'tom')).length === 10, `${name}: ?who=tom + keyboard answered 10`)
   await page.waitForTimeout(800)
   await page.screenshot({ path: `${OUT}/${slug}_5-complete-tom-conflicts.png` })
   await page.screenshot({ path: `${OUT}/${slug}_5b-complete-tom-full.png`, fullPage: true })

@@ -93,6 +93,9 @@ it('queues completion metadata durably and sends the final file after an in-flig
     const queued = JSON.parse(safeStorage.get('31andrews.outbox.TEST.https://example.invalid')!)[`${deck.deck_id}.jane`];
     expect(queued).toMatchObject({ test: true, x_test: true, round: deck.round, total_cards: deck.cards.length, round_complete: true });
     expect(queued.loved_questions[deck.cards[0].id]).toBe(deck.cards[0].question.slice(0, 240));
+    expect(queued.loved_questions[deck.cards[1].id]).toBeUndefined();
+    expect(queued.answers[1].x_pick).toBe('b');
+    expect(JSON.stringify(queued.answers)).not.toMatch(/skip|note|strength/);
     finishFirst({ ok: true, json: async () => ({ ok: true }) });
     await vi.waitFor(() => expect(fetcher).toHaveBeenCalledTimes(2));
     expect(JSON.parse(fetcher.mock.calls[1][1].body).round_complete).toBe(true);

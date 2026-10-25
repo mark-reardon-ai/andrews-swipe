@@ -27,6 +27,8 @@ export function prepareDeck(d: Deck, url: string): Deck {
   for (const c of d.cards) {
     if (!c || typeof c.id !== 'string' || !c.id || ids.has(c.id) || !['anchor_now', 'option', 'compare', 'detail', 'picks_so_far'].includes(c.kind) || typeof c.question !== 'string' || !c.image || typeof c.image.file !== 'string' || typeof c.image.alt !== 'string' || typeof c.yes?.summary !== 'string' || typeof c.no?.summary !== 'string')
       throw new Error('One picture is missing its details. Please ask Mark to check it.');
+    if (c.x_ab !== undefined && (!c.x_ab || typeof c.x_ab.left !== 'string' || !c.x_ab.left.trim() || typeof c.x_ab.right !== 'string' || !c.x_ab.right.trim() || !c.image.file_b))
+      throw new Error('One comparison needs two labels and two pictures.');
     if (c.image.fit !== undefined && !['cover', 'contain'].includes(c.image.fit))
       throw new Error('One picture has an unsupported image fit. Please use cover or contain.');
     if (c.image.file_b !== undefined && typeof c.image.file_b !== 'string')

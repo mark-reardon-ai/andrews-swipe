@@ -1,3 +1,4 @@
+import { actionsFor, isAB } from '../actions';
 import { useEffect, useRef, useState } from 'react';
 import { loadDeck, loadRounds, prepareDeck } from '../deck';
 import { sectionOf, type AppPerson, type Deck, type Rounds, type SwipeAnswersFile } from '../types';
@@ -171,11 +172,10 @@ export default function AdminScreen() {
   const tally = new Map<string, {
     yes: number;
     no: number;
-    skip: number;
   }>();
-  for (const row of comparisons) {
+  for (const row of comparisons.filter(row => !isAB(row.card))) {
     for (const tag of new Set([sectionOf(row.card)])) {
-      const counts = tally.get(tag) ?? { yes: 0, no: 0, skip: 0 };
+      const counts = tally.get(tag) ?? { yes: 0, no: 0 };
       for (const answer of row.answers)
         counts[answer.swipe] += 1;
       tally.set(tag, counts);
@@ -260,7 +260,7 @@ export default function AdminScreen() {
         </section>
         <section>
           <h2>Tally by section</h2>{[...tally].map(([tag, counts]) => <p key={tag}>
-            <strong>{tag}</strong>: {counts.yes} yes · {counts.no} no · {counts.skip} skip</p>)}</section>
+            <strong>{tag}</strong>: {counts.yes} love it · {counts.no} nope</p>)}</section>
 
         <section>
           <h2>Per-card answers</h2>
@@ -272,11 +272,12 @@ export default function AdminScreen() {
                 alt={card.image.alt}
 
               />
-              <span>{card.question}<span className="answer-chips">{answers.map(a => <span className={`chip ${a.swipe}`} key={a.person}>{personName(a.person)}: {answerLabel(a.swipe)}</span>)}</span>
+              <span>{card.question}<span className="answer-chips">{answers.map(a => <span className={`chip ${a.swipe}`} key={a.person}>{personName(a.person)}: {answerLabel(a.swipe, card)}</span>)}</span>
               </span>
             </summary>
             <p>{card.id} · {sectionOf(card)} · {card.option_tags?.join(', ')}</p>
-            {answers.map(a => <p key={a.person}>{personName(a.person)}: {a.note || 'No note'} · Strength: {a.strength ?? '—'} · Dwell: {a.dwell_ms ?? '—'} ms</p>)}
+            {card.detail && <p>{card.detail}</p>}
+            {isAB(card) && <p>{Object.values(actionsFor(card)).map(action => `${answers.filter(a => a.swipe === action.swipe).length} ${action.label}`).join(' · ')}</p>}
             {card.gives_up_vs_expansion && <p><strong>Trade-off note (admin only):</strong> {card.gives_up_vs_expansion}</p>}
             {(['yes', 'no'] as const).map(value => <div key={value}>
               <strong>{value}:</strong> {card[value].summary}<p>Eliminates: {card[value].eliminates?.join(', ') || '—'}</p>

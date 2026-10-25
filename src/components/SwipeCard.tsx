@@ -1,10 +1,11 @@
-import { useEffect, useRef, useState } from 'react';
+import { actionsFor, buttonLabel } from '../actions';
+import { copy } from '../copy';
+import { useEffect, useRef } from 'react';
 import type { PointerEvent as ReactPointerEvent } from 'react';
 import { imageSrcSet, type Card, type SwipeAnswer } from '../types';
 import { classifySwipe } from '../swipe';
 export type Choice = {
   swipe: SwipeAnswer['swipe'];
-  strength?: 3;
 };
 interface Props {
   card: Card;
@@ -12,11 +13,10 @@ interface Props {
   request?: Choice | null;
   onAnswer?: (choice: Choice) => void;
   onInteract?: () => void;
-  onZoom?: () => void;
   onUndo?: () => void;
   onBusy?: (busy: boolean) => void;
 }
-export default function SwipeCard({ card, underneath, request, onAnswer, onInteract, onZoom, onUndo, onBusy }: Props) {
+export default function SwipeCard({ card, underneath, request, onAnswer, onInteract, onUndo, onBusy }: Props) {
   const element = useRef<HTMLDivElement>(null);
   const gesture = useRef<{
     id: number;
@@ -32,8 +32,7 @@ export default function SwipeCard({ card, underneath, request, onAnswer, onInter
   const frame = useRef(0);
   const timer = useRef<ReturnType<typeof setTimeout> | undefined>(undefined);
   const busy = useRef(false);
-  const lastTap = useRef(0);
-  const [burst, setBurst] = useState(false);
+  const actions = actionsFor(card);
   const reduced = () => window.matchMedia('(prefers-reduced-motion: reduce)').matches;
   function paint(dx: number, dy: number) {
     const node = element.current;
@@ -42,10 +41,8 @@ export default function SwipeCard({ card, underneath, request, onAnswer, onInter
     node.style.transform = reduced() ? '' : `translate3d(${dx}px, ${dy}px, 0) rotate(${Math.max(-12, Math.min(12, dx / 20))}deg)`;
     node.parentElement?.classList.toggle('moving', Math.abs(dx) + Math.abs(dy) > 1);
     const width = node.clientWidth;
-    const height = node.clientHeight;
     node.style.setProperty('--yes', String(Math.min(1, Math.max(0, dx / (width * 0.3)))));
     node.style.setProperty('--no', String(Math.min(1, Math.max(0, -dx / (width * 0.3)))));
-    node.style.setProperty('--skip', String(Math.min(1, Math.max(0, -dy / (height * 0.22)))));
   }
   function fly(choice: Choice) {
     if (busy.current || underneath)
@@ -53,14 +50,12 @@ export default function SwipeCard({ card, underneath, request, onAnswer, onInter
     busy.current = true;
     onBusy?.(true);
     onInteract?.();
-    navigator.vibrate?.(choice.strength ? [25, 40, 25] : 15);
-    if (choice.strength)
-      setBurst(true);
+    navigator.vibrate?.(15);
     cancelAnimationFrame(frame.current);
     const node = element.current;
     if (node) {
       node.style.transition = 'transform 280ms ease-in, opacity 280ms ease-in';
-      paint(choice.swipe === 'yes' ? window.innerWidth * 1.5 : choice.swipe === 'no' ? -window.innerWidth * 1.5 : 0, choice.swipe === 'skip' ? -window.innerHeight * 1.5 : 0);
+      paint(choice.swipe === 'yes' ? window.innerWidth * 1.5 : -window.innerWidth * 1.5, 0);
       node.style.opacity = '0';
     }
     timer.current = setTimeout(() => onAnswer?.(choice), reduced() ? 150 : 280);
@@ -121,13 +116,7 @@ export default function SwipeCard({ card, underneath, request, onAnswer, onInter
     else {
       event.currentTarget.style.transition = 'transform 300ms cubic-bezier(.2,.8,.2,1)';
       paint(0, 0);
-      if (!cancelled && Math.hypot(g.dx, g.dy) < 8) {
-        if (card.image.fit === 'contain')
-          onZoom?.();
-        else if (lastTap.current > 0 && event.timeStamp - lastTap.current < 320)
-          fly({ swipe: 'yes', strength: 3 });
-        lastTap.current = event.timeStamp;
-      }
+
     }
   }
   return <div
@@ -137,7 +126,7 @@ export default function SwipeCard({ card, underneath, request, onAnswer, onInter
     data-card-id={card.id}
     tabIndex={underneath ? -1 : 0}
     role={underneath ? undefined : 'group'}
-    aria-label={underneath ? undefined : `${card.question} Use arrow keys to answer.`}
+    aria-label={underneath ? undefined : `${card.question} ${copy.cardKeys}`}
     aria-hidden={underneath || undefined}
     onPointerDown={down}
     onPointerMove={move}
@@ -146,7 +135,7 @@ export default function SwipeCard({ card, underneath, request, onAnswer, onInter
     onKeyDown={e => {
       if (underneath || busy.current)
         return;
-      const swipe = { ArrowRight: 'yes', ArrowLeft: 'no', ArrowUp: 'skip' }[e.key] as SwipeAnswer['swipe'] | undefined;
+      const swipe = e.key === 'ArrowLeft' ? actions.left.swipe : e.key === 'ArrowRight' ? actions.right.swipe : undefined;
       if (swipe) {
         e.preventDefault();
         fly({ swipe });
@@ -155,10 +144,7 @@ export default function SwipeCard({ card, underneath, request, onAnswer, onInter
         e.preventDefault();
         onUndo?.();
       }
-      if ((e.key === 'Enter' || e.key === ' ') && card.image.fit === 'contain') {
-        e.preventDefault();
-        onZoom?.();
-      }
+
     }}
 
   >
@@ -175,16 +161,14 @@ export default function SwipeCard({ card, underneath, request, onAnswer, onInter
           style={{ objectFit: card.image.fit ?? 'cover' }}
 
         />
-        {card.image.file_b && <span className="image-label">{card.kind === 'anchor_now' ? (i === 0 ? 'Today' : 'Model') : (i === 0 ? 'A' : 'B')}</span>}
+        {card.image.file_b && <span className="image-label">{card.x_ab ? buttonLabel(card, i === 0 ? 'left' : 'right') : (i === 0 ? 'A' : 'B')}</span>}
       </div>)}
     </div>
     {!underneath && <>
       <div className="edge yes-edge" />
       <div className="edge no-edge" />
-      <div className="edge skip-edge" />
-      <span className="stamp love-stamp">LOVE IT</span>
-      <span className="stamp no-stamp">NO THANKS</span>
-      <span className="stamp skip-stamp">NOT SURE</span>{card.image.fit === 'contain' && <span className="zoom-hint">Tap to zoom</span>}{burst && <span className="heart-burst">♥ ♥ ♥<small>LOVE LOVE</small>
-      </span>}</>}
+      <span className="stamp love-stamp">{actions.right.label.toUpperCase()}</span>
+      <span className="stamp no-stamp">{actions.left.label.toUpperCase()}</span>
+    </>}
   </div>;
 }

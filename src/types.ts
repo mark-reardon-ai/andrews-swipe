@@ -41,6 +41,7 @@ export interface Card {
   image: CardImage;
   question: string;
   detail?: string;
+  x_ab?: { left: string; right: string };
   option_tags?: string[];
   decision?: string;
   option?: string;
@@ -71,9 +72,8 @@ export interface Deck {
 }
 export interface SwipeAnswer {
   card_id: string;
-  swipe: 'yes' | 'no' | 'skip';
-  strength?: 1 | 2 | 3;
-  note?: string;
+  swipe: 'yes' | 'no';
+  x_pick?: 'a' | 'b';
   at: string;
   dwell_ms?: number;
   revisited?: boolean;

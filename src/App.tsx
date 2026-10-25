@@ -104,7 +104,6 @@ function Kitchen({ data, reload, hash }: {
     size={size}
     person={state.person}
     onAnswer={state.answer}
-    onNote={state.annotate}
     onSwitch={() => state.choose(null)}
     onUndo={state.undo}
     canUndo={!!file?.answers.length}

@@ -8,7 +8,7 @@ function file(person: AppPerson, swipe: SwipeAnswer['swipe']) {
   return buildAnswersFile(deck, person, [{ card_id: deck.cards[0].id, swipe, at: '2026-10-25T12:00:00Z' }]);
 }
 describe('comparisons across participants', () => {
-  it.each([['yes', 'no', true], ['yes', 'skip', true], ['no', 'skip', true], ['yes', 'yes', false], ['skip', 'skip', false]] as const)('%s versus %s', (a, b, conflict) => {
+  it.each([['yes', 'no', true], ['yes', 'yes', false]] as const)('%s versus %s', (a, b, conflict) => {
     expect(compareAnswers(deck, [file('tom', a), file('jane', b)])[0].conflict).toBe(conflict);
   });
   it('includes joint differences and requires individual yes answers for agreement', () => {
@@ -26,11 +26,9 @@ describe('comparisons across participants', () => {
 describe('CSV and favorite exports', () => {
   it('uses answer.schema columns plus joint, and quotes CSV values', () => {
     const joint = file('both', 'yes');
-    joint.answers[0].note = 'Warm, "lovely"\nroom';
-    joint.answers[0].strength = 3;
     const csv = answersCSV([joint]);
     expect(csv.split('\r\n')[0]).toBe('"question","person","value","strength","note","at","channel","recorded_by","joint"');
-    expect(csv).toContain(`"${deck.cards[0].id}","other","yes","3","Warm, ""lovely""\nroom"`);
+    expect(csv).toContain(`"${deck.cards[0].id}","other","yes","",""`);
     expect(csv).toContain('"swipe_app","other","true"');
   });
   it('retains only favorites that are still loved when rebuilding', () => {

@@ -1,3 +1,4 @@
+import { cleanAnswers } from '../actions';
 import type { AppPerson, SwipeAnswersFile } from '../types';
 export interface AnswerStore {
   load(deckId: string, person: AppPerson): Promise<SwipeAnswersFile | null>;
@@ -48,15 +49,12 @@ export function parseFile(raw: string | null, deckId: string, person: AppPerson)
       return null;
     if (!Array.isArray(file.answers))
       return null;
+    file.answers = file.answers.filter((answer: { swipe?: string } | null) => answer?.swipe !== 'skip');
     const ids = new Set<string>();
     for (const answer of file.answers) {
       if (!answer || typeof answer.card_id !== 'string' || ids.has(answer.card_id))
         return null;
-      if (!['yes', 'no', 'skip'].includes(answer.swipe) || !Number.isFinite(Date.parse(answer.at)))
-        return null;
-      if (answer.strength !== undefined && ![1, 2, 3].includes(answer.strength))
-        return null;
-      if (answer.note !== undefined && typeof answer.note !== 'string')
+      if (!['yes', 'no'].includes(answer.swipe) || !Number.isFinite(Date.parse(answer.at)))
         return null;
       if (answer.dwell_ms !== undefined && (!Number.isInteger(answer.dwell_ms) || answer.dwell_ms < 0))
         return null;
@@ -69,6 +67,7 @@ export function parseFile(raw: string | null, deckId: string, person: AppPerson)
       cards?: unknown[];
     }) => session && Number.isFinite(Date.parse(session.started ?? '')) && Array.isArray(session.cards))))
       return null;
+    file.answers = cleanAnswers(file.answers);
     return file;
   }
   catch {

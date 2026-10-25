@@ -154,10 +154,6 @@ p {
   background: #f3e5dc;
 }
 
-.skip {
-  background: #ececde;
-}
-
 .yes {
   background: #dce6d6;
   color: #345342;
@@ -268,7 +264,6 @@ p {
   touch-action: none;
   --yes: 0;
   --no: 0;
-  --skip: 0;
 }
 
 .card-images {
@@ -332,13 +327,6 @@ p {
   opacity: var(--no);
 }
 
-.skip-stamp {
-  top: 42%;
-  left: 20%;
-  color: #203747;
-  opacity: var(--skip);
-}
-
 .edge {
   position: absolute;
   inset: 0;
@@ -356,11 +344,6 @@ p {
   opacity: var(--no);
 }
 
-.skip-edge {
-  box-shadow: inset 0 18px 35px #607e9b;
-  opacity: var(--skip);
-}
-
 .answer-buttons .no b {
   background: #f0ded5;
   color: #944a3d;
@@ -369,132 +352,6 @@ p {
 .answer-buttons .yes b {
   background: #dce6d6;
   color: #426347;
-}
-
-.zoom-access {
-  position: absolute;
-  right: 8px;
-  bottom: 8px;
-  z-index: 3;
-  min-height: 48px;
-  font-size: 15px;
-  background: #fffaf0ed;
-}
-
-.last-note {
-  position: absolute;
-  z-index: 4;
-  top: 62px;
-  right: 16px;
-  min-height: 48px;
-  padding: 6px 12px;
-  font-size: 13px;
-  border-radius: 24px;
-  background: #fffaf0ed;
-}
-
-.encouragement {
-  position: absolute;
-  z-index: 6;
-  top: 80px;
-  left: 20px;
-  right: 20px;
-  padding: 18px;
-  border-radius: 16px;
-  text-align: center;
-  background: #e1eadb;
-  box-shadow: 0 4px 24px #20374720;
-  animation: fade-in 180ms;
-}
-
-.modal-backdrop {
-  position: fixed;
-  inset: 0;
-  z-index: 20;
-  background: #20374766;
-  display: flex;
-  align-items: flex-end;
-}
-
-.note-sheet {
-  width: 100%;
-  max-width: 560px;
-  margin: 0 auto;
-  background: #f7f2e7;
-  border-radius: 24px 24px 0 0;
-  padding: 22px 20px calc(20px + env(safe-area-inset-bottom));
-}
-
-.note-sheet textarea {
-  width: 100%;
-  min-height: 160px;
-  resize: vertical;
-  border-radius: 12px;
-  padding: 14px;
-  font: inherit;
-  font-size: 18px;
-  color: #203747;
-  background: #fffcf5;
-  border: 1px solid #a6ad9f;
-}
-
-.note-sheet > div {
-  display: flex;
-  gap: 12px;
-  margin-top: 14px;
-}
-
-.note-sheet button {
-  flex: 1;
-}
-
-.zoom-viewer {
-  position: fixed;
-  inset: 0;
-  z-index: 30;
-  background: #f7f2e7;
-  display: flex;
-  flex-direction: column;
-  padding: calc(12px + env(safe-area-inset-top)) 12px calc(12px + env(safe-area-inset-bottom));
-}
-
-.zoom-viewer button {
-  align-self: flex-end;
-  min-width: 120px;
-}
-
-.zoom-scroll {
-  flex: 1;
-  min-height: 0;
-  overflow: auto;
-  touch-action: pan-x pan-y pinch-zoom;
-  display: grid;
-  place-items: center;
-}
-
-.zoom-scroll img {
-  width: 100%;
-  height: auto;
-}
-
-.zoom-viewer p {
-  text-align: center;
-  font-size: 16px;
-}
-
-.heart-burst {
-  position: absolute;
-  inset: 25% 0 auto;
-  text-align: center;
-  font-size: 50px;
-  color: #436747;
-  animation: hearts 280ms ease-out;
-  text-shadow: 0 2px 5px #fff;
-}
-
-.heart-burst small {
-  display: block;
-  font-size: 24px;
 }
 
 @keyframes hearts {
@@ -545,19 +402,11 @@ p {
     animation: fade-in 150ms !important;
     transition: opacity 150ms !important;
   }
-  .coach span {
-    animation: none;
-  }
 }
 
 /* Reserve text and controls first; the image uses the remaining viewport. */
 .answer-footer, .card-top {
   flex-shrink: 0;
-}
-
-.note-sheet {
-  max-height: 85dvh;
-  overflow-y: auto;
 }
 
 .house-logo {
@@ -933,45 +782,12 @@ button[aria-pressed="true"] {
   color: #465449;
 }
 
-.detail-preview {
-  display: flex;
-  gap: 6px;
-  align-items: center;
-}
-
-.detail-preview p {
-  display: -webkit-box;
-  -webkit-line-clamp: 2;
-  -webkit-box-orient: vertical;
-  overflow: hidden;
-  flex: 1;
-}
-
-.detail-preview button {
-  min-width: 48px;
-  min-height: 44px;
-  padding: 0;
-  border: 0;
-  background: transparent;
-  text-decoration: underline;
-  font-size: 17px;
-}
-
 .answer-footer {
   display: flex;
   flex-direction: column;
   align-items: center;
   padding: 0 16px 6px;
   flex-shrink: 0;
-}
-
-.note-pill {
-  min-height: 36px;
-  padding: 2px 12px;
-  border: 0;
-  background: transparent;
-  font-size: 17px;
-  text-decoration: underline;
 }
 
 .answer-buttons {
@@ -1006,33 +822,6 @@ button[aria-pressed="true"] {
 .answer-buttons span {
   font-size: 16px;
   font-weight: 600;
-}
-
-.coach {
-  position: absolute;
-  z-index: 3;
-  bottom: 12px;
-  left: 50%;
-  transform: translateX(-50%);
-  width: max-content;
-  max-width: 90%;
-  display: flex;
-  align-items: center;
-  gap: 12px;
-  border-radius: 40px;
-  padding: 6px 18px;
-  background: #fffaf0da;
-  pointer-events: none;
-}
-
-.coach span {
-  font-size: 26px;
-  animation: coaching 3s ease-in-out infinite;
-}
-
-.coach p {
-  font-size: 17px;
-  margin: 0;
 }
 
 .progress-cards {
@@ -1114,10 +903,6 @@ summary:focus-visible, input:focus-visible, select:focus-visible, textarea:focus
   flex: 1 1 140px;
 }
 
-.chip, .loved-grid p, .review-buttons button, .home-hint p, .zoom-viewer p, .zoom-access, .last-note, .person-chip, .top-progress, .text-button, .image-label {
-  font-size: 17px;
-}
-
 .person-chip small {
   font-size: 17px;
 }
@@ -1160,10 +945,6 @@ summary:focus-visible, input:focus-visible, select:focus-visible, textarea:focus
   .admin {
     max-width: 1200px;
     box-shadow: none;
-  }
-  .zoom-viewer {
-    max-width: 520px;
-    margin-inline: auto;
   }
 }
 
@@ -1218,14 +999,6 @@ summary:focus-visible, input:focus-visible, select:focus-visible, textarea:focus
   }
 }
 
-/* Keep the middle choice visibly circular and slightly quieter at every size. */
-.answer-buttons .skip b {
-  width: calc(var(--answer-size, 64px) - 8px);
-  height: calc(var(--answer-size, 64px) - 8px);
-  background: #dce4ec;
-  color: #304b63;
-}
-
 /* iPhone SE (667pt tall): keep all three person buttons on screen without scrolling. */
 @media (max-height: 720px) {
   .hero {
@@ -1263,3 +1036,19 @@ summary:focus-visible, input:focus-visible, select:focus-visible, textarea:focus
 .test-run { height: 100dvh; display: flex; flex-direction: column; }
 .test-run > .test-banner { flex-shrink: 0; }
 .test-run > .screen { flex: 1; height: auto; min-height: 0; }
+
+/* Keep the pictures dominant and all controls inside the visible viewport. */
+.card-screen { min-height: 0; width: 100%; }
+.card-content { width: 100%; min-width: 0; }
+.card-top { min-height: 48px; height: 48px; padding: 0 8px; gap: 4px; }
+.card-top button { min-height: 48px; font-size: 14px; padding: 4px 8px; }
+.card-stack { margin: 0; border-radius: 0; }
+.swipe-card { border-radius: 0; }
+.question { padding: 5px 12px; text-align: center; }
+.question h1 { font-size: clamp(22px, 5.8vw, 26px); margin: 0; line-height: 1.12; }
+.answer-footer { padding: 2px 8px 6px; }
+.answer-buttons { justify-content: center; align-items: center; gap: 18px; }
+.answer-buttons button { flex: 0 1 auto; min-width: 56px; min-height: 56px; height: 56px; padding: 6px; border-radius: 50%; font-size: 14px; font-weight: 600; overflow-wrap: anywhere; max-width: 40%; }
+.answer-buttons .no { background: #f0ded5; }
+.answer-buttons .yes { background: #dce6d6; }
+.answer-buttons [data-testid="btn-undo"] { width: 48px; min-width: 48px; height: 48px; min-height: 48px; font-size: 24px; background: #e7e8db; }

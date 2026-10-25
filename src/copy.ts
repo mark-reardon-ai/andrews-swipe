@@ -1,12 +1,7 @@
-// Copy audit: start/welcome, card preview and More sheet, review/comparison lists,
-// complete and break screens, loading/errors, hints/toasts, answer labels,
-// admin details, index.html title and social metadata, public/manifest.webmanifest,
-// public/rounds.json titles, and the shipped deck's intro/questions/details/image alt text.
-// Private card notes and answer implications belong only in the admin per-card details.
 export const copy = {
   headline: 'Your kitchen, your way',
   subline: 'Help us land on a design you love.',
-  helper: 'Swipe or tap to share what you like.',
+  helper: 'Swipe left or right to share what you like.',
   home: '31 ANDREWS · OUR MAINE HOME',
   together: 'We’re doing it together',
   allDone: 'All done ✓',
@@ -37,10 +32,14 @@ export const copy = {
   nextRound: 'Mark is putting together the next round. We’ll have it here soon.',
   backToStart: 'Back to start',
   encouragement: (name: string) => `You’re doing great, ${name}!`,
-  coach: 'Swipe or tap below',
+  coach: 'Swipe ← or →',
   homeHint: (sync: boolean) => `Tip: tap Share, then 'Add to Home Screen' to keep this handy.${sync ? ' Your answers sync between visits.' : ' The Home Screen app keeps its own progress.'}`,
   gotIt: 'Got it',
-  no: 'No',
-  skip: 'Not sure',
+  no: 'Nope',
   yes: 'Love it',
+  undo: 'Undo',
+  cardKeys: 'Use left or right arrow keys to answer.',
+  picked: (label: string) => `You picked: ${label}`,
+  leftLabel: (label: string) => `← ${label}`,
+  rightLabel: (label: string) => `${label} →`,
 } as const;

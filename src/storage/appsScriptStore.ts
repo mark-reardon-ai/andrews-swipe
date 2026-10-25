@@ -1,3 +1,4 @@
+import { cleanAnswers, isAB } from '../actions';
 import type { AppPerson, Deck, SwipeAnswersFile } from '../types';
 import { filePerson, parseFile, safeStorage, type AnswerStore } from './index';
 export class AppsScriptStore implements AnswerStore {
@@ -28,11 +29,12 @@ export class AppsScriptStore implements AnswerStore {
     }
   }
   async save(file: SwipeAnswersFile) {
+    file = { ...file, answers: cleanAnswers(file.answers) };
     const payload = {
       ...file, x_test: this.test || file.person === 'mark', test: this.test || file.person === 'mark', round: file.x_round,
       total_cards: this.deck?.cards.length,
       round_complete: !!this.deck && this.deck.cards.every(c => file.answers.some(a => a.card_id === c.id)),
-      loved_questions: Object.fromEntries((this.deck?.cards ?? []).filter(c => file.answers.some(a => a.card_id === c.id && a.swipe === 'yes')).map(c => [c.id, c.question.slice(0, 240)])),
+      loved_questions: Object.fromEntries((this.deck?.cards ?? []).filter(c => !isAB(c) && file.answers.some(a => a.card_id === c.id && a.swipe === 'yes')).map(c => [c.id, c.question.slice(0, 240)])),
     };
     const q = this.queue();
     q[`${file.deck_id}.${filePerson(file)}`] = payload;
@@ -46,7 +48,7 @@ export class AppsScriptStore implements AnswerStore {
     let succeeded = false;
     try {
       for (const [id, file] of Object.entries(this.queue())) {
-        const response = await fetch(this.endpoint, { method: 'POST', headers: { 'Content-Type': 'text/plain;charset=utf-8' }, body: JSON.stringify(file), signal: AbortSignal.timeout(15000) });
+        const response = await fetch(this.endpoint, { method: 'POST', headers: { 'Content-Type': 'text/plain;charset=utf-8' }, body: JSON.stringify({ ...file, answers: cleanAnswers(file.answers) }), signal: AbortSignal.timeout(15000) });
         if (!response.ok || (await response.json()).ok !== true)
           return;
         const latest = this.queue();

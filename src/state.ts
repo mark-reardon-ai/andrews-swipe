@@ -1,3 +1,4 @@
+import { actionFor } from './actions';
 import { useRef, useState } from 'react';
 import type { AppPerson, Deck, SwipeAnswer, SwipeAnswersFile, Sitting } from './types';
 import type { AnswerStore } from './storage';
@@ -28,7 +29,7 @@ export function useAnswers(deck: Deck, store: AnswerStore, initial: Files, size:
     setFiles(filesRef.current);
     void store.save(file);
   }
-  function answer(swipe: SwipeAnswer['swipe'], extras: Pick<SwipeAnswer, 'note' | 'strength'> = {}) {
+  function answer(swipe: SwipeAnswer['swipe']) {
     if (!person || index < 0 || pause)
       return;
     const previous = filesRef.current[person];
@@ -40,7 +41,7 @@ export function useAnswers(deck: Deck, store: AnswerStore, initial: Files, size:
     if (!sitting.current)
       sitting.current = { started: now, cards: [] };
     sitting.current = { ...sitting.current, cards: [...sitting.current.cards, deck.cards[activeIndex].id] };
-    const answers = [...(previous?.answers ?? []), { card_id: deck.cards[activeIndex].id, swipe, ...extras, ...(previous?.x_removed?.[deck.cards[activeIndex].id] ? { revisited: true } : {}), at: now, dwell_ms: Math.max(0, Date.now() - shown.current) }];
+    const answers = [...(previous?.answers ?? []), { card_id: deck.cards[activeIndex].id, ...actionFor(deck.cards[activeIndex], swipe), ...(previous?.x_removed?.[deck.cards[activeIndex].id] ? { revisited: true } : {}), at: now, dwell_ms: Math.max(0, Date.now() - shown.current) }];
     const count = deck.cards.filter(c => answers.some(a => a.card_id === c.id)).length;
     const boundary = count % size === 0 || count === deck.cards.length;
     if (boundary)
@@ -52,14 +53,6 @@ export function useAnswers(deck: Deck, store: AnswerStore, initial: Files, size:
     if (boundary)
       sitting.current = null;
     shown.current = Date.now();
-  }
-  function annotate(cardId: string, note: string) {
-    if (!person)
-      return;
-    const previous = filesRef.current[person];
-    if (!previous?.answers.some(a => a.card_id === cardId))
-      return;
-    commit(person, { ...previous, answers: previous.answers.map(a => a.card_id === cardId ? { ...a, note } : a) });
   }
   function undo() {
     if (!person)
@@ -92,7 +85,7 @@ export function useAnswers(deck: Deck, store: AnswerStore, initial: Files, size:
     const previous = filesRef.current[person];
     if (!previous)
       return;
-    const answers = previous.answers.map(a => a.card_id === cardId ? { ...a, swipe, strength: undefined, revisited: true, at: new Date().toISOString() } : a);
+    const answers = previous.answers.map(a => a.card_id === cardId ? { ...a, ...actionFor(deck.cards.find(c => c.id === cardId)!, swipe), revisited: true, at: new Date().toISOString() } : a);
     commit(person, buildAnswersFile(deck, person, answers, previous));
   }
   function favorite(cardId: string) {
@@ -105,7 +98,7 @@ export function useAnswers(deck: Deck, store: AnswerStore, initial: Files, size:
     commit(person, { ...previous, favorites: favorites.includes(cardId) ? favorites.filter(id => id !== cardId) : [...favorites, cardId] });
   }
   return {
-    revise, favorite, files, person, index, pause, choose, answer, annotate, undo, keepGoing: () => {
+    revise, favorite, files, person, index, pause, choose, answer, undo, keepGoing: () => {
       setPause(false);
       shown.current = Date.now();
     }

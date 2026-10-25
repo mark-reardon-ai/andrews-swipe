@@ -23,7 +23,7 @@ describe('official formats and storage', () => {
     expect(ajv.compile(cardSchema)(sample)).toBe(true);
   });
   it.each(['tom', 'jane', 'both'] as const)('builds schema-valid %s answers', p => {
-    const f = buildAnswersFile(deck, p, [{ card_id: deck.cards[0].id, swipe: 'skip', at: new Date().toISOString(), dwell_ms: 42 }]);
+    const f = buildAnswersFile(deck, p, [{ card_id: deck.cards[0].id, swipe: 'no', at: new Date().toISOString(), dwell_ms: 42 }]);
     expect(validate(f), JSON.stringify(validate.errors)).toBe(true);
     expect(f.session?.finished).toBeUndefined();
     if (p === 'both') {
@@ -60,8 +60,8 @@ describe('official formats and storage', () => {
   });
   it('merges newest timestamps per card', () => {
     const a = buildAnswersFile(deck, 'tom', [{ card_id: 'a', swipe: 'yes', at: '2026-10-25T12:00:00Z' }]);
-    const b = buildAnswersFile(deck, 'tom', [{ card_id: 'a', swipe: 'no', at: '2026-10-25T13:00:00Z' }, { card_id: 'b', swipe: 'skip', at: '2026-10-25T13:00:00Z' }]);
-    expect(mergeFiles(a, b)?.answers.map(x => x.swipe)).toEqual(['no', 'skip']);
+    const b = buildAnswersFile(deck, 'tom', [{ card_id: 'a', swipe: 'no', at: '2026-10-25T13:00:00Z' }, { card_id: 'b', swipe: 'no', at: '2026-10-25T13:00:00Z' }]);
+    expect(mergeFiles(a, b)?.answers.map(x => x.swipe)).toEqual(['no', 'no']);
   });
 });
 it('keeps undo removed across remote restore, allowing a later replacement', () => {

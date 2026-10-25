@@ -1,3 +1,4 @@
+import { actionsFor, isAB } from '../actions';
 import { copy } from '../copy';
 import { useEffect, useState } from 'react';
 import type { Deck, SwipeAnswer, SwipeAnswersFile } from '../types';
@@ -33,7 +34,7 @@ export default function RoundCompleteScreen({ deck, file, files, endpoint, newRo
     const timer = setInterval(check, 1500);
     return () => clearInterval(timer);
   }, [endpoint, file]);
-  const loved = file.answers.filter(a => a.swipe === 'yes').sort((a, b) => (b.strength ?? 0) - (a.strength ?? 0));
+  const loved = file.answers.filter(a => a.swipe === 'yes' && deck.cards.some(c => c.id === a.card_id && !isAB(c)));
   const comparison = compareAnswers(deck, files);
   return <main className="summary screen">
     <div className="confetti" aria-hidden="true">{Array.from({ length: 14 }, (_, i) => <span key={i} style={{ left: `${i * 7}%`, animationDelay: `${i * .3}s` }}>{i % 2 ? '♥' : '❧'}</span>)}</div>
@@ -51,7 +52,7 @@ export default function RoundCompleteScreen({ deck, file, files, endpoint, newRo
           alt={card.image.alt}
           style={{ objectFit: card.image.fit ?? 'cover' }}
 
-        />{answer.strength === 3 && <span className="star" aria-label="Loved strongly">★</span>}<button
+        /><button
           aria-label={`Favorite: ${card.question}`}
           aria-pressed={file.favorites?.includes(card.id) ?? false}
           onClick={() => onFavorite(card.id)}
@@ -61,7 +62,10 @@ export default function RoundCompleteScreen({ deck, file, files, endpoint, newRo
       </article>;
     })}</div>
     {!loved.length && <p>{copy.noLoved}</p>}
-    <p>Not for us: {file.answers.filter(a => a.swipe === 'no').length} · Not sure: {file.answers.filter(a => a.swipe === 'skip').length}</p>
+    {deck.cards.filter(isAB).map(card => {
+      const answer = file.answers.find(a => a.card_id === card.id);
+      return answer && <p key={card.id}>{card.question} — {copy.picked(answerLabel(answer.swipe, card))}</p>;
+    })}
     {comparison.some(c => c.conflict) && <section>
       <h2>{copy.discuss}</h2>
       <ComparisonList rows={comparison.filter(c => c.conflict)} />
@@ -78,12 +82,12 @@ export default function RoundCompleteScreen({ deck, file, files, endpoint, newRo
     {review && <section>
       <h2>{copy.yourAnswers}</h2>{deck.cards.map(card => <article className="review-card" key={card.id}>
         <p>{card.question}</p>
-        <div className="review-buttons">{(['no', 'skip', 'yes'] as const).map(value => <button
+        <div className="review-buttons">{Object.values(actionsFor(card)).map(({ swipe: value }) => <button
           key={value}
           aria-pressed={file.answers.find(a => a.card_id === card.id)?.swipe === value}
           onClick={() => onRevise(card.id, value)}
 
-        >{answerLabel(value)}</button>)}</div>
+        >{answerLabel(value, card)}</button>)}</div>
       </article>)}</section>}
     {newRound && <button className="primary" onClick={onNew}>{copy.newRound}</button>}
     <p>{copy.nextRound}</p>

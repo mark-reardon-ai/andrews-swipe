@@ -1,7 +1,7 @@
 # 31 Andrews: Kitchen Choices
 
-A private, phone-friendly kitchen picture picker for Tom and Jane. Swipe or tap
-Love it, No, or Not sure; add notes and favorites, then compare choices in Mark’s workshop.
+A private, phone-friendly kitchen picture picker for Tom and Jane. Swipe left or right
+to pick Nope / Love it or choose between two pictures, then compare choices in Mark’s workshop.
 
 Run locally:
 

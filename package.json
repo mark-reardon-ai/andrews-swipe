@@ -9,7 +9,10 @@
     "lint": "oxlint",
     "preview": "vite preview",
     "test": "vitest run",
-    "publish-round": "node scripts/publish-round.mjs"
+    "publish-round": "node scripts/publish-round.mjs",
+    "e2e": "node tests/e2e.mjs http://localhost:4173/ screenshots && node tests/e2e-rounds.mjs http://localhost:4173/ screenshots && node tests/e2e-test-mode.mjs http://localhost:4173/ screenshots && node tests/e2e-sync.mjs http://localhost:4173/ && node tests/apps-script-mock.mjs",
+    "deploy": "bash scripts/deploy-gh-pages.sh mark-reardon-ai andrews-swipe",
+    "validate-deck": "node scripts/validate-deck.mjs"
   },
   "dependencies": {
     "react": "^19.3.1",

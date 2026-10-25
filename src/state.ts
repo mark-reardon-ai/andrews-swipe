@@ -4,7 +4,7 @@ import type { AnswerStore } from './storage';
 import { buildAnswersFile } from './export';
 export type Files = Partial<Record<AppPerson, SwipeAnswersFile>>;
 export const firstUnanswered = (deck: Deck, file?: SwipeAnswersFile) => deck.cards.findIndex(c => !file?.answers.some(a => a.card_id === c.id));
-export function useAnswers(deck: Deck, store: AnswerStore, initial: Files, size: number, initialPerson: AppPerson | null) {
+export function useAnswers(deck: Deck, store: AnswerStore, initial: Files, size: number, initialPerson: AppPerson | null, test = false) {
   const [files, setFiles] = useState(initial);
   const filesRef = useRef(initial);
   const [person, setPerson] = useState<AppPerson | null>(initialPerson);
@@ -23,6 +23,7 @@ export function useAnswers(deck: Deck, store: AnswerStore, initial: Files, size:
     shown.current = Date.now();
   }
   function commit(p: AppPerson, file: SwipeAnswersFile) {
+    file = { ...file, x_test: test || p === 'mark' };
     filesRef.current = { ...filesRef.current, [p]: file };
     setFiles(filesRef.current);
     void store.save(file);

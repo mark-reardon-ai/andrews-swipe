@@ -1,6 +1,8 @@
 import { copy } from '../copy';
 import { useEffect, useRef, useState } from 'react';
 import { imageSrcSet, type AppPerson, type Deck, type SwipeAnswer } from '../types';
+import { personName } from '../compare';
+import { isTestMode } from '../testMode';
 import { safeStorage } from '../storage';
 import SwipeCard, { type Choice } from '../components/SwipeCard';
 export { default as SwipeCard } from '../components/SwipeCard';
@@ -19,10 +21,10 @@ interface Props {
 }
 export default function CardScreen({ deck, index, size, person, onAnswer, onNote, onSwitch, onUndo, canUndo, hint, dismissHint }: Props) {
   const card = deck.cards[index];
-  const name = person === 'both' ? 'Tom & Jane' : person === 'tom' ? 'Tom' : 'Jane';
+  const name = personName(person);
   const offset = Math.floor(index / size) * size;
   const total = Math.min(size, deck.cards.length - offset);
-  const coachKey = `31andrews.coach.${person}`;
+  const coachKey = `31andrews.${isTestMode(new URLSearchParams(location.search)) || person === 'mark' ? 'TEST.' : ''}coach.${person}`;
   const [coach, setCoach] = useState(index === 0 && !safeStorage.get(coachKey));
   const [request, setRequest] = useState<Choice | null>(null);
   const [busy, setBusy] = useState(false);

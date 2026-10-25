@@ -1,5 +1,5 @@
 import type { AppPerson, Deck, SwipeAnswer, SwipeAnswersFile, Sitting } from './types';
-export function buildAnswersFile(deck: Deck, person: AppPerson, answers: SwipeAnswer[], previous?: SwipeAnswersFile | null, sessions?: Sitting[]): SwipeAnswersFile {
+export function buildAnswersFile(deck: Deck, person: AppPerson, answers: SwipeAnswer[], previous?: SwipeAnswersFile | null, sessions?: Sitting[], test = false): SwipeAnswersFile {
   const now = new Date().toISOString();
   const complete = deck.cards.every(c => answers.some(a => a.card_id === c.id));
   return {
@@ -8,6 +8,7 @@ export function buildAnswersFile(deck: Deck, person: AppPerson, answers: SwipeAn
     deck_version: deck.version,
     person: person === 'both' ? 'other' : person,
     ...(person === 'both' ? { x_joint: true, x_people: ['tom', 'jane'] as ('tom' | 'jane')[] } : {}),
+    x_test: test || person === 'mark' || previous?.x_test === true,
     x_round: deck.round,
     session: {
       started: previous?.session?.started ?? now,
@@ -40,8 +41,9 @@ export async function shareFile(name: string, content: string, type = 'applicati
   anchor.click();
   setTimeout(() => URL.revokeObjectURL(url), 1000);
 }
+export const exportFilename = (file: SwipeAnswersFile) => `${file.deck_id}.${file.x_joint ? 'both' : file.person}${file.x_test || file.person === 'mark' ? '.TEST' : ''}.json`;
 export function exportAnswers(file: SwipeAnswersFile) {
-  return shareFile(`${file.deck_id}.${file.x_joint ? 'both' : file.person}.json`, JSON.stringify(file, null, 2));
+  return shareFile(exportFilename(file), JSON.stringify(file, null, 2));
 }
 export function answersCSV(files: SwipeAnswersFile[]): string {
   const rows: unknown[][] = [['question', 'person', 'value', 'strength', 'note', 'at', 'channel', 'recorded_by', 'joint']];

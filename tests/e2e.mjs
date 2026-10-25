@@ -5,7 +5,8 @@ import fs from 'fs'
 const BASE = process.argv[2] || 'http://localhost:4173/'
 const OUT = process.argv[3] || 'screenshots'
 fs.mkdirSync(OUT, { recursive: true })
-const PHONES = ['iPhone SE', 'iPhone 15', 'iPhone 15 Pro Max']
+// Playwright viewports are Safari's visible area (toolbars shown): SE 1st gen 320x568, SE 3rd gen 375x667, 15 393x659, 15 Pro Max 430x739.
+const PHONES = ['iPhone SE', 'iPhone SE (3rd gen)', 'iPhone 15', 'iPhone 15 Pro Max']
 let failures = 0
 const check = (ok, msg) => { console.log(`${ok ? 'PASS' : 'FAIL'}  ${msg}`); if (!ok) failures++ }
 const ls = (page) => page.evaluate(() => Object.fromEntries(Object.keys(localStorage).filter(k => k.startsWith('31andrews.swipe.')).map(k => [k, JSON.parse(localStorage.getItem(k))])))
@@ -24,7 +25,7 @@ async function drag(page, dx, dy, { hold = false, shot } = {}) {
 }
 
 for (const name of PHONES) {
-  const slug = name.toLowerCase().replace(/\s+/g, '-')
+  const slug = name.toLowerCase().replace(/[()]/g, '').replace(/\s+/g, '-')
   const browser = await webkit.launch(); const ctx = await browser.newContext({ ...devices[name] })
   const page = await ctx.newPage()
   const errors = []; page.on('pageerror', e => { if (!/access control checks/.test(e.message)) errors.push(e.message); else console.log('INFO  (ignored WebKit aborted-fetch notice on navigation)') })

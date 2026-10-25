@@ -30,3 +30,11 @@ Deploy the static build in any subfolder. Set OG_BASE to the absolute hosting UR
 ## Workshop exports
 
 Bundles use `{format:"31andrews.swipe_bundle/1", exported_at, deck_id, round, files, conflicts}`. Each conflict has `card_id` and the differing answers with app-person labels. CSV columns are `question,person,value,strength,note,at,channel,recorded_by,joint`; question is the card ID and channel is `swipe_app`. Joint rows use person `other`, recorded_by `other`, and joint `true`. Individual rows record their participant.
+
+## Test runs and reset
+
+`?who=mark` always selects test mode. `?test=1` can rehearse Tom, Jane, or Together using `who=tom|jane|both`; its picker also offers Mark. Test files have `x_test: true`, and filenames are `<deck_id>.<person>.TEST.json`. Mark uses the existing schema person `mark`. Test answer keys are `31andrews.swipe.TEST.<round>.<deck_id>.<app-person>`; the durable outbox and home hint also have separate TEST namespaces. Real progress is never loaded into a test run.
+
+The sync POST includes `test`, `round`, `total_cards`, `round_complete`, and `loved_questions` (card ID to question, capped at 240 characters). These transport fields support completion email; `x_test` remains the answer-file marker. Apps Script separates `answers_test`/`files_test`, and GET uses `test=1`. Mark is treated as test server-side too. Notification identity is deck ID + app person + test flag in `notified`.
+
+`?reset=1&key=<admin_key>` validates the manifest key before clearing test local keys and posting `{action:"reset_test",key}` when configured. Apps Script independently checks Script Property `ADMIN_KEY`. `&all=1` offers an explicit button and confirmation to clear real local Tom/Jane/Together progress and pending sends as well. Neither real reset control deletes Sheet data. Without a matching nonempty manifest key the shortcut shows “Ask Mark for help”.

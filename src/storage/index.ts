@@ -5,9 +5,14 @@ export interface AnswerStore {
   listPeople(deckId: string): Promise<AppPerson[]>;
   clear(deckId: string, person: AppPerson): Promise<void>;
 }
-export const filePerson = (f: SwipeAnswersFile): AppPerson => f.x_joint ? 'both' : f.person === 'jane' ? 'jane' : 'tom';
+export const filePerson = (f: SwipeAnswersFile): AppPerson => f.x_joint ? 'both' : f.person === 'mark' ? 'mark' : f.person === 'jane' ? 'jane' : 'tom';
 const memory = new Map<string, string>();
 export const safeStorage = {
+  keys(): string[] {
+    const keys = new Set(memory.keys());
+    try { for (let i = 0; i < localStorage.length; i++) { const key = localStorage.key(i); if (key) keys.add(key); } } catch { /* Memory fallback. */ }
+    return [...keys];
+  },
   get(key: string): string | null {
     try {
       return memory.get(key) ?? localStorage.getItem(key);
@@ -37,7 +42,7 @@ export function parseFile(raw: string | null, deckId: string, person: AppPerson)
     if (!file || file.format !== '31andrews.swipe_answers/1' || file.deck_id !== deckId)
       return null;
     const joint = file.person === 'other' && file.x_joint === true;
-    if (!(joint || ['tom', 'jane'].includes(file.person)) || filePerson(file) !== person)
+    if (!(joint || ['tom', 'jane', 'mark'].includes(file.person)) || filePerson(file) !== person)
       return null;
     if (file.x_joint && !joint)
       return null;

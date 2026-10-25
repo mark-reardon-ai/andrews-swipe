@@ -1258,3 +1258,8 @@ summary:focus-visible, input:focus-visible, select:focus-visible, textarea:focus
     min-height: 48px;
   }
 }
+
+.test-banner { padding: .65rem 1rem; text-align: center; background: #fff3cd; color: #574518; font-size: .9rem; }
+.test-run { height: 100dvh; display: flex; flex-direction: column; }
+.test-run > .test-banner { flex-shrink: 0; }
+.test-run > .screen { flex: 1; height: auto; min-height: 0; }

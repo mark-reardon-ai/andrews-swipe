@@ -22,7 +22,7 @@ export default function RoundCompleteScreen({ deck, file, files, endpoint, newRo
   useEffect(() => {
     const check = () => {
       try {
-        const queue = JSON.parse(safeStorage.get(`31andrews.outbox.${endpoint}`) ?? '{}');
+        const queue = JSON.parse(safeStorage.get(`31andrews.outbox.${file.x_test || file.person === 'mark' ? 'TEST.' : ''}${endpoint}`) ?? '{}');
         setPending(!!queue[`${file.deck_id}.${filePerson(file)}`]);
       }
       catch {

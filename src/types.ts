@@ -1,5 +1,5 @@
 export type Person = 'tom' | 'jane';
-export type AppPerson = Person | 'both';
+export type AppPerson = Person | 'both' | 'mark';
 type SchemaPerson = Person | 'mark' | 'engineer' | 'contractor' | 'town' | 'other';
 type Realism = 'concept' | 'photoreal_textures' | 'photoreal_products';
 export interface Implication {
@@ -98,6 +98,7 @@ export interface SwipeAnswersFile {
   favorites?: string[];
   x_joint?: boolean;
   x_people?: Person[];
+  x_test?: boolean;
   x_round?: string;
   x_sessions?: Sitting[];
   x_removed?: Record<string, string>;

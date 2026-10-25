@@ -20,3 +20,13 @@ With a deployed Apps Script URL in `answers_endpoint`, answers also queue locall
 Mark opens `#/admin`, loads device answers, imports exported files, or taps **Fetch from Sheet**. Exports include individual answer files, a bundle with conflicts, and CSV rows. Joint files use `person: "other"`, `x_joint: true`; the CSV has a `joint` column. Imports and Sheet fetches merge into the workshop view; they do not overwrite this device's participant answers.
 
 An optional `admin_key` in the manifest adds a casual lock; use `?key=your-key#/admin` or type the key once. This is not security: static files, the key, and device data remain browser accessible. The app includes noindex and robots exclusions to discourage search indexing.
+
+## Before Tom and Jane start
+
+1. Configure optional Sheet sync and Script Properties `NOTIFY_EMAIL` and `ADMIN_KEY` using [Apps Script setup](../apps-script/README.md).
+2. Do a full sample run yourself at `?who=mark`; check the `[TEST] Mark finished Round 1 (R01)` email and test Sheet tabs.
+3. Open `?reset=1&key=<admin_key>` to clear test data on this phone and in the Sheet. Tap **Start fresh** afterward.
+4. If rehearsing on their phones used real links, use `?reset=1&key=<admin_key>&all=1` and explicitly confirm clearing real progress on each phone. This leaves the Sheet unchanged. Prefer test links for rehearsals.
+5. Send the per-person links: `?who=tom` and `?who=jane`, or `?who=both` for Together.
+
+More test links: `?test=1`, `?test=1&who=tom`, `?test=1&who=jane`, and `?test=1&who=both`. Test progress and exports stay separate from real answers. Mark’s workshop offers these links, **Reset test data**, and a separate **Reset real progress on this phone** control with person/all choices and two confirmations. A reset shortcut with the wrong key only shows “Ask Mark for help”.

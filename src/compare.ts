@@ -17,5 +17,5 @@ export function compareAnswers(deck: Deck, files: SwipeAnswersFile[]) {
     return { card, answers, conflict, agreedYes };
   });
 }
-export const personName = (person: AppPerson) => person === 'both' ? 'Tom & Jane' : person === 'tom' ? 'Tom' : 'Jane';
+export const personName = (person: AppPerson) => person === 'both' ? 'Tom & Jane' : person === 'mark' ? 'Mark' : person === 'tom' ? 'Tom' : 'Jane';
 export const answerLabel = (value: string) => value === 'yes' ? copy.yes : value === 'no' ? copy.no : copy.skip;

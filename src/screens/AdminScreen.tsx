@@ -7,6 +7,7 @@ import { mergeFiles } from '../storage/compositeStore';
 import { answersCSV, exportAnswers, shareFile } from '../export';
 import { compareAnswers, personName, answerLabel } from '../compare';
 import ComparisonList from '../components/ComparisonList';
+import { clearRealLocal, resetTest } from '../testMode';
 const people: AppPerson[] = ['tom', 'jane', 'both'];
 export default function AdminScreen() {
   const requests = useRef(new Set<AbortController>());
@@ -103,6 +104,7 @@ export default function AdminScreen() {
         const parsed = parseFile(raw, deck.deck_id, filePerson(candidate));
         if (!parsed)
           throw new Error('This answer file does not match this deck or has invalid answers.');
+        if (parsed.x_test) throw new Error('Use a real answer file in this workshop view.');
         incoming.push(parsed);
       }
       catch (e) {
@@ -135,6 +137,7 @@ export default function AdminScreen() {
         const parsed = parseFile(raw, deck.deck_id, person);
         if (!parsed)
           throw new Error('The Sheet returned an invalid answer file.');
+        if (parsed.x_test) throw new Error('Use a real answer file in this workshop view.');
         incoming.push(parsed);
       }
       catch (e) {
@@ -207,6 +210,28 @@ export default function AdminScreen() {
       <button>Open workshop</button>
     </form>}
     {allowed && <>
+      <section className="actions">
+        <h2>Test runs</h2>
+        <p>Open a test run</p>
+        {['?who=mark', '?test=1&who=tom', '?test=1&who=jane', '?test=1&who=both'].map(link => <a className="button" key={link} href={link}>{link}</a>)}
+        <button disabled={busy} onClick={async () => {
+          if (!confirm('Clear all test data on this phone and in the Sheet?')) return;
+          setBusy(true);
+          try { setStatus(await resetTest(rounds?.answers_endpoint, rounds?.admin_key ?? '')); }
+          catch (error) { setError((error as Error).message); }
+          finally { setBusy(false); }
+        }}>Reset test data</button>
+      </section>
+      <section className="actions">
+        <h2>Reset real progress on this phone</h2>
+        <p>This clears local answers and pending sends. The Sheet stays as it is.</p>
+        {[...people, 'all' as const].map(person => <button key={person} onClick={() => {
+          if (!confirm(`Clear real progress for ${person} on this phone?`) || !confirm('This cannot be undone. Clear it now?')) return;
+          clearRealLocal(person === 'all' ? undefined : person);
+          setFiles(previous => person === 'all' ? [] : previous.filter(f => filePerson(f) !== person));
+          setStatus('Real progress cleared on this phone');
+        }}>{person === 'all' ? 'All' : person === 'both' ? 'Together' : personName(person)}</button>)}
+      </section>
       {deck && <>
         <h2>{rounds!.rounds.find(r => r.round === selected)?.title ?? deck.round}</h2>
         <p>{deck.deck_id}</p>
@@ -326,25 +351,7 @@ export default function AdminScreen() {
             <button disabled={busy}>Load deck from URL</button>
           </form>
         </details>
-        <details>
-          <summary>Danger zone</summary>
-          <p>Clears answers and pending sends on this device. Imported and Sheet answers are not deleted.</p>{people.map(person => <button key={person} onClick={async () => {
-            if (!confirm(`Reset this device for ${personName(person)}? This cannot be undone.`))
-              return;
-            await new LocalStorageStore(deck.round).clear(deck.deck_id, person);
-            await new LocalStorageStore().clear(deck.deck_id, person);
-            if (rounds!.answers_endpoint) {
-              const outboxKey = `31andrews.outbox.${rounds!.answers_endpoint}`;
-              try {
-                const queue = JSON.parse(safeStorage.get(outboxKey) ?? '{}');
-                delete queue[`${deck.deck_id}.${person}`];
-                safeStorage.set(outboxKey, JSON.stringify(queue));
-              }
-              catch { /* Leave unrelated pending sends intact. */ }
-            }
-            setFiles(previous => previous.filter(f => filePerson(f) !== person));
-            setStatus(`Reset this device for ${personName(person)}.`);
-          }}>Reset this device for {personName(person)}</button>)}</details>
+
       </>}
 
     </>}

@@ -1,0 +1,279 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://31andrews.local/schema/swipe_card.schema.json",
+  "title": "Swipe deck (one per round per audience)",
+  "description": "What we hand to Mark's swipe app each round: rounds/Rxx/swipe/deck.json. Images live next to it in rounds/Rxx/swipe/img/. The app shows cards in order and returns swipe_answer files.",
+  "type": "object",
+  "required": [
+    "format",
+    "deck_id",
+    "round",
+    "version",
+    "created",
+    "realism",
+    "cards"
+  ],
+  "properties": {
+    "format": {
+      "const": "31andrews.swipe_deck/1"
+    },
+    "deck_id": {
+      "type": "string",
+      "description": "e.g. DECK-R02-v1"
+    },
+    "round": {
+      "type": "string"
+    },
+    "version": {
+      "type": "integer",
+      "minimum": 1
+    },
+    "created": {
+      "$ref": "common.schema.json#/$defs/datetime"
+    },
+    "realism": {
+      "enum": [
+        "concept",
+        "photoreal_textures",
+        "photoreal_products"
+      ],
+      "description": "Realism ladder: concept = styled renders over the real geometry (R1-R2); photoreal_textures = photoreal with the real photo textures (R3-R5); photoreal_products = photoreal with the actual selected products (R6-R8). R-X uses the level of the round it is compared with."
+    },
+    "audience": {
+      "type": "array",
+      "items": {
+        "enum": [
+          "tom",
+          "jane",
+          "both"
+        ]
+      },
+      "default": [
+        "tom",
+        "jane"
+      ],
+      "description": "Tom and Jane swipe separately by default."
+    },
+    "intro": {
+      "type": "string",
+      "description": "One friendly line shown before the first card."
+    },
+    "generated_from": {
+      "type": "string",
+      "description": "Input hash of the round (round.json generated_from)."
+    },
+    "cards": {
+      "type": "array",
+      "minItems": 1,
+      "items": {
+        "$ref": "#/$defs/card"
+      }
+    }
+  },
+  "$defs": {
+    "ref_image": {
+      "type": "object",
+      "required": [
+        "kind",
+        "ref"
+      ],
+      "properties": {
+        "kind": {
+          "enum": [
+            "photo",
+            "model_render",
+            "product",
+            "swatch",
+            "previous_card"
+          ]
+        },
+        "ref": {
+          "type": "string",
+          "description": "Photo id (photo.schema), render file, selection id or card id."
+        },
+        "note": {
+          "type": "string"
+        }
+      }
+    },
+    "implication": {
+      "type": "object",
+      "required": [
+        "summary"
+      ],
+      "properties": {
+        "summary": {
+          "type": "string",
+          "description": "Plain words: what this swipe tells us."
+        },
+        "sets": {
+          "type": "array",
+          "items": {
+            "type": "object",
+            "required": [
+              "decision",
+              "value"
+            ],
+            "properties": {
+              "decision": {
+                "$ref": "common.schema.json#/$defs/id"
+              },
+              "value": {}
+            }
+          }
+        },
+        "eliminates": {
+          "type": "array",
+          "items": {
+            "type": "string"
+          },
+          "description": "Option ids this answer rules out (if both agree)."
+        },
+        "follow_up": {
+          "type": "string",
+          "description": "Card id to show next if this answer is given."
+        }
+      }
+    },
+    "card": {
+      "type": "object",
+      "required": [
+        "id",
+        "kind",
+        "image",
+        "question",
+        "yes",
+        "no"
+      ],
+      "properties": {
+        "id": {
+          "type": "string",
+          "description": "e.g. SC-R02-007"
+        },
+        "kind": {
+          "enum": [
+            "anchor_now",
+            "option",
+            "compare",
+            "detail",
+            "picks_so_far"
+          ],
+          "description": "anchor_now = 'your house today' (real photo + model render of the same view); compare = side by side (e.g. in-footprint vs. expansion); picks_so_far = the end-of-deck composite."
+        },
+        "image": {
+          "type": "object",
+          "required": [
+            "file",
+            "alt"
+          ],
+          "properties": {
+            "file": {
+              "type": "string",
+              "description": "Path relative to the deck, e.g. img/SC-R02-007.png"
+            },
+            "file_b": {
+              "type": "string",
+              "description": "Second image for kind=compare or before/after."
+            },
+            "alt": {
+              "type": "string"
+            },
+            "width": {
+              "type": "integer"
+            },
+            "height": {
+              "type": "integer"
+            },
+            "room": {
+              "type": "string"
+            },
+            "camera": {
+              "type": "string",
+              "description": "Named camera in the model, matched to the photo it was taken from (e.g. CAM-KIT-C1)."
+            },
+            "realism": {
+              "enum": [
+                "concept",
+                "photoreal_textures",
+                "photoreal_products"
+              ],
+              "description": "Realism ladder: concept = styled renders over the real geometry (R1-R2); photoreal_textures = photoreal with the real photo textures (R3-R5); photoreal_products = photoreal with the actual selected products (R6-R8). R-X uses the level of the round it is compared with."
+            },
+            "generator": {
+              "type": "object",
+              "properties": {
+                "tool": {
+                  "enum": [
+                    "gemini",
+                    "model_render",
+                    "photo",
+                    "other"
+                  ]
+                },
+                "account": {
+                  "type": "string",
+                  "description": "e.g. Mark's Gemini Pro (box browser)"
+                },
+                "generated_at": {
+                  "$ref": "common.schema.json#/$defs/datetime"
+                },
+                "prompt_file": {
+                  "type": "string"
+                },
+                "references": {
+                  "type": "array",
+                  "items": {
+                    "$ref": "#/$defs/ref_image"
+                  },
+                  "description": "This round's real photos, the model render from the same camera, and the selected products."
+                }
+              }
+            }
+          }
+        },
+        "question": {
+          "type": "string",
+          "maxLength": 120,
+          "description": "Short, one idea, answerable yes/no."
+        },
+        "detail": {
+          "type": "string",
+          "maxLength": 280,
+          "description": "Optional small print under the image (dimensions, price band, trade-off)."
+        },
+        "option_tags": {
+          "type": "array",
+          "items": {
+            "type": "string"
+          },
+          "description": "e.g. layout:L-island, wall:open, finish:white-oak"
+        },
+        "decision": {
+          "$ref": "common.schema.json#/$defs/id"
+        },
+        "option": {
+          "type": "string"
+        },
+        "gives_up_vs_expansion": {
+          "type": "string",
+          "description": "Honesty rule: what this in-footprint option gives up, shown on the card when it matters."
+        },
+        "yes": {
+          "$ref": "#/$defs/implication"
+        },
+        "no": {
+          "$ref": "#/$defs/implication"
+        },
+        "show_if": {
+          "type": "array",
+          "items": {
+            "$ref": "common.schema.json#/$defs/condition"
+          }
+        },
+        "order": {
+          "type": "integer"
+        }
+      }
+    }
+  }
+}

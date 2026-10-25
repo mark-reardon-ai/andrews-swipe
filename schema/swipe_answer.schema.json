@@ -1,0 +1,95 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://31andrews.local/schema/swipe_answer.schema.json",
+  "title": "Swipe answers (one file per person per deck)",
+  "description": "What Mark's swipe app returns: rounds/Rxx/swipe/answers/<deck_id>.<person>.json. Rows convert 1:1 into answers.csv (answer.schema) with channel 'swipe_app'.",
+  "type": "object",
+  "required": [
+    "format",
+    "deck_id",
+    "person",
+    "answers"
+  ],
+  "properties": {
+    "format": {
+      "const": "31andrews.swipe_answers/1"
+    },
+    "deck_id": {
+      "type": "string"
+    },
+    "deck_version": {
+      "type": "integer"
+    },
+    "person": {
+      "$ref": "common.schema.json#/$defs/person"
+    },
+    "session": {
+      "type": "object",
+      "properties": {
+        "started": {
+          "$ref": "common.schema.json#/$defs/datetime"
+        },
+        "finished": {
+          "$ref": "common.schema.json#/$defs/datetime"
+        },
+        "device": {
+          "type": "string"
+        },
+        "app_version": {
+          "type": "string"
+        }
+      }
+    },
+    "answers": {
+      "type": "array",
+      "items": {
+        "type": "object",
+        "required": [
+          "card_id",
+          "swipe",
+          "at"
+        ],
+        "properties": {
+          "card_id": {
+            "type": "string"
+          },
+          "swipe": {
+            "enum": [
+              "yes",
+              "no",
+              "skip"
+            ]
+          },
+          "strength": {
+            "type": "integer",
+            "minimum": 1,
+            "maximum": 3,
+            "description": "Optional: 3 = love it / hate it (e.g. a super-swipe)."
+          },
+          "note": {
+            "type": "string",
+            "description": "Optional typed or spoken comment."
+          },
+          "at": {
+            "$ref": "common.schema.json#/$defs/datetime"
+          },
+          "dwell_ms": {
+            "type": "integer",
+            "minimum": 0,
+            "description": "Time on the card before swiping."
+          },
+          "revisited": {
+            "type": "boolean"
+          }
+        }
+      }
+    },
+    "favorites": {
+      "type": "array",
+      "items": {
+        "type": "string"
+      },
+      "description": "Card ids starred at the end, if the app offers it."
+    }
+  }
+}

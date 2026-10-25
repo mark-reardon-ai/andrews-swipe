@@ -1,0 +1,110 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://31andrews.local/schema/common.schema.json",
+  "title": "Shared definitions",
+  "$defs": {
+    "id": {
+      "type": "string",
+      "pattern": "^[A-Z0-9][A-Za-z0-9._-]*$",
+      "description": "Stable id, never reused (e.g. DEC-KIT-LAYOUT, R02, Q-R02-007)."
+    },
+    "date": {
+      "type": "string",
+      "format": "date"
+    },
+    "datetime": {
+      "type": "string",
+      "format": "date-time"
+    },
+    "person": {
+      "enum": [
+        "tom",
+        "jane",
+        "mark",
+        "engineer",
+        "contractor",
+        "town",
+        "other"
+      ]
+    },
+    "confidence": {
+      "enum": [
+        "high",
+        "med",
+        "low",
+        "assumed"
+      ],
+      "description": "Same scale as measure/*.csv; 'assumed' = not observed."
+    },
+    "provenance": {
+      "type": "object",
+      "required": [
+        "source"
+      ],
+      "properties": {
+        "source": {
+          "type": "string",
+          "description": "File path, URL, person or round id the value came from."
+        },
+        "ref": {
+          "type": "string",
+          "description": "Row id, page, timestamp, photo id."
+        },
+        "recorded_by": {
+          "$ref": "#/$defs/person"
+        },
+        "date": {
+          "$ref": "#/$defs/date"
+        },
+        "note": {
+          "type": "string"
+        }
+      }
+    },
+    "money": {
+      "type": "object",
+      "required": [
+        "amount"
+      ],
+      "properties": {
+        "amount": {
+          "type": "number"
+        },
+        "currency": {
+          "const": "USD",
+          "default": "USD"
+        },
+        "low": {
+          "type": "number"
+        },
+        "high": {
+          "type": "number"
+        }
+      }
+    },
+    "condition": {
+      "type": "object",
+      "description": "Gate on a decision's locked value. All conditions in a list are ANDed.",
+      "required": [
+        "decision"
+      ],
+      "properties": {
+        "decision": {
+          "$ref": "#/$defs/id"
+        },
+        "equals": {},
+        "in": {
+          "type": "array"
+        },
+        "not": {},
+        "status": {
+          "enum": [
+            "proposed",
+            "locked"
+          ],
+          "default": "locked"
+        }
+      }
+    }
+  }
+}

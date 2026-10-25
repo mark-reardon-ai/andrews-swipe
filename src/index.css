@@ -1225,3 +1225,36 @@ summary:focus-visible, input:focus-visible, select:focus-visible, textarea:focus
   background: #dce4ec;
   color: #304b63;
 }
+
+/* iPhone SE (667pt tall): keep all three person buttons on screen without scrolling. */
+@media (max-height: 720px) {
+  .hero {
+    flex-basis: 26%;
+    height: 26%;
+  }
+  .start h1 {
+    font-size: 28px;
+    margin: 4px 0;
+  }
+  .round-eyebrow {
+    margin-top: 4px;
+    font-size: 16px;
+  }
+  .subline {
+    margin: 2px 0;
+  }
+  .welcome > p {
+    margin: 4px 0;
+  }
+  .people {
+    gap: 8px;
+  }
+  .people button {
+    min-height: 52px;
+    padding-top: 8px;
+    padding-bottom: 8px;
+  }
+  .people .together {
+    min-height: 48px;
+  }
+}

@@ -1,0 +1,585 @@
+{
+  "format": "31andrews.swipe_deck/1",
+  "deck_id": "DECK-R01-v2",
+  "round": "R01",
+  "version": 2,
+  "created": "2026-10-28T08:45:00-04:00",
+  "realism": "concept",
+  "intro": "Two pictures of the same room, side by side: swipe toward the one that feels more like home. A few cards are a single picture: swipe right if you love it.",
+  "session_size": 19,
+  "cards": [
+    {
+      "id": "SC-R01-101",
+      "kind": "compare",
+      "question": "The kitchen and living room: Light & Coastal or Period & Playful?",
+      "x_ab": {
+        "left": "Light & Coastal",
+        "right": "Period & Playful"
+      },
+      "order": 1,
+      "image": {
+        "file": "img/SC-R01-101.jpg",
+        "file_b": "img/SC-R01-101-b.jpg",
+        "alt": "The living room toward the fireplace with the kitchen open beside it. Left, Light & Coastal: white Shaker cabinets, pale sea-glass walls, limewashed brick, light oak floors. Right, Period & Playful: green lower cabinets, cream glass-front uppers, natural red brick, a white mantel, a schoolhouse pendant.",
+        "x_webp": {
+          "720": "img/SC-R01-101-720.webp",
+          "1280": "img/SC-R01-101-1280.webp"
+        },
+        "x_webp_b": {
+          "720": "img/SC-R01-101-b-720.webp",
+          "1280": "img/SC-R01-101-b-1280.webp"
+        }
+      },
+      "option_tags": [
+        "section:taste"
+      ],
+      "yes": {
+        "summary": "Period & Playful feels more like home in the kitchen and living room."
+      },
+      "no": {
+        "summary": "Light & Coastal feels more like home in the kitchen and living room."
+      }
+    },
+    {
+      "id": "SC-R01-102",
+      "kind": "compare",
+      "question": "The downstairs bath: Period & Playful or Warm & Grounded?",
+      "x_ab": {
+        "left": "Period & Playful",
+        "right": "Warm & Grounded"
+      },
+      "order": 2,
+      "image": {
+        "file": "img/SC-R01-102.jpg",
+        "file_b": "img/SC-R01-102-b.jpg",
+        "alt": "The downstairs bath from the door: a step-free glass shower ahead. Left, Period & Playful: square white tile with a thin green line, a schoolhouse ceiling light, a checkerboard floor. Right, Warm & Grounded: handmade cream tile, warm brass fittings, a lantern sconce, a dark stone vanity top.",
+        "x_webp": {
+          "720": "img/SC-R01-102-720.webp",
+          "1280": "img/SC-R01-102-1280.webp"
+        },
+        "x_webp_b": {
+          "720": "img/SC-R01-102-b-720.webp",
+          "1280": "img/SC-R01-102-b-1280.webp"
+        }
+      },
+      "option_tags": [
+        "section:taste"
+      ],
+      "yes": {
+        "summary": "Warm & Grounded feels more like home in the downstairs bath."
+      },
+      "no": {
+        "summary": "Period & Playful feels more like home in the downstairs bath."
+      }
+    },
+    {
+      "id": "SC-R01-103",
+      "kind": "compare",
+      "question": "Your bath upstairs: Warm & Grounded or Period & Playful?",
+      "x_ab": {
+        "left": "Warm & Grounded",
+        "right": "Period & Playful"
+      },
+      "order": 3,
+      "image": {
+        "file": "img/SC-R01-103.jpg",
+        "file_b": "img/SC-R01-103-b.jpg",
+        "alt": "Your bath upstairs under the dormer: a walk-in glass shower and the vanity under the window. Left, Warm & Grounded: handmade cream tile, brass fittings and lantern sconces, a gray-green vanity with a dark top. Right, Period & Playful: square white tile, a soft green vanity, a black and white checkerboard floor.",
+        "x_webp": {
+          "720": "img/SC-R01-103-720.webp",
+          "1280": "img/SC-R01-103-1280.webp"
+        },
+        "x_webp_b": {
+          "720": "img/SC-R01-103-b-720.webp",
+          "1280": "img/SC-R01-103-b-1280.webp"
+        }
+      },
+      "option_tags": [
+        "section:taste"
+      ],
+      "yes": {
+        "summary": "Period & Playful feels more like home in your bath upstairs."
+      },
+      "no": {
+        "summary": "Warm & Grounded feels more like home in your bath upstairs."
+      }
+    },
+    {
+      "id": "SC-R01-104",
+      "kind": "compare",
+      "question": "The kitchen and living room: Period & Playful or Warm & Grounded?",
+      "x_ab": {
+        "left": "Period & Playful",
+        "right": "Warm & Grounded"
+      },
+      "order": 4,
+      "image": {
+        "file": "img/SC-R01-104.jpg",
+        "file_b": "img/SC-R01-104-b.jpg",
+        "alt": "The living room toward the fireplace with the kitchen open beside it. Left, Period & Playful: green lower cabinets, cream glass-front uppers, natural red brick, a white mantel, a schoolhouse pendant. Right, Warm & Grounded: gray-green Shaker cabinets with brass pulls, natural red brick, an oak beam mantel.",
+        "x_webp": {
+          "720": "img/SC-R01-104-720.webp",
+          "1280": "img/SC-R01-104-1280.webp"
+        },
+        "x_webp_b": {
+          "720": "img/SC-R01-104-b-720.webp",
+          "1280": "img/SC-R01-104-b-1280.webp"
+        }
+      },
+      "option_tags": [
+        "section:taste"
+      ],
+      "yes": {
+        "summary": "Warm & Grounded feels more like home in the kitchen and living room."
+      },
+      "no": {
+        "summary": "Period & Playful feels more like home in the kitchen and living room."
+      }
+    },
+    {
+      "id": "SC-R01-105",
+      "kind": "compare",
+      "question": "The downstairs bath: Light & Coastal or Period & Playful?",
+      "x_ab": {
+        "left": "Light & Coastal",
+        "right": "Period & Playful"
+      },
+      "order": 5,
+      "image": {
+        "file": "img/SC-R01-105.jpg",
+        "file_b": "img/SC-R01-105-b.jpg",
+        "alt": "The downstairs bath from the door: a step-free glass shower ahead. Left, Light & Coastal: white subway tile, beadboard below pale sea-glass walls, polished nickel. Right, Period & Playful: square white tile with a thin green line, a schoolhouse ceiling light, a checkerboard floor.",
+        "x_webp": {
+          "720": "img/SC-R01-105-720.webp",
+          "1280": "img/SC-R01-105-1280.webp"
+        },
+        "x_webp_b": {
+          "720": "img/SC-R01-105-b-720.webp",
+          "1280": "img/SC-R01-105-b-1280.webp"
+        }
+      },
+      "option_tags": [
+        "section:taste"
+      ],
+      "yes": {
+        "summary": "Period & Playful feels more like home in the downstairs bath."
+      },
+      "no": {
+        "summary": "Light & Coastal feels more like home in the downstairs bath."
+      }
+    },
+    {
+      "id": "SC-R01-106",
+      "kind": "compare",
+      "question": "Your bath upstairs: Light & Coastal or Warm & Grounded?",
+      "x_ab": {
+        "left": "Light & Coastal",
+        "right": "Warm & Grounded"
+      },
+      "order": 6,
+      "image": {
+        "file": "img/SC-R01-106.jpg",
+        "file_b": "img/SC-R01-106-b.jpg",
+        "alt": "Your bath upstairs under the dormer: a walk-in glass shower and the vanity under the window. Left, Light & Coastal: beadboard below pale sea-glass walls, a white vanity, nickel fittings. Right, Warm & Grounded: handmade cream tile, brass fittings and lantern sconces, a gray-green vanity with a dark top.",
+        "x_webp": {
+          "720": "img/SC-R01-106-720.webp",
+          "1280": "img/SC-R01-106-1280.webp"
+        },
+        "x_webp_b": {
+          "720": "img/SC-R01-106-b-720.webp",
+          "1280": "img/SC-R01-106-b-1280.webp"
+        }
+      },
+      "option_tags": [
+        "section:taste"
+      ],
+      "yes": {
+        "summary": "Warm & Grounded feels more like home in your bath upstairs."
+      },
+      "no": {
+        "summary": "Light & Coastal feels more like home in your bath upstairs."
+      }
+    },
+    {
+      "id": "SC-R01-107",
+      "kind": "compare",
+      "question": "The kitchen and living room: Warm & Grounded or Light & Coastal?",
+      "x_ab": {
+        "left": "Warm & Grounded",
+        "right": "Light & Coastal"
+      },
+      "order": 7,
+      "image": {
+        "file": "img/SC-R01-107.jpg",
+        "file_b": "img/SC-R01-107-b.jpg",
+        "alt": "The living room toward the fireplace with the kitchen open beside it. Left, Warm & Grounded: gray-green Shaker cabinets with brass pulls, natural red brick, an oak beam mantel. Right, Light & Coastal: white Shaker cabinets, pale sea-glass walls, limewashed brick, light oak floors.",
+        "x_webp": {
+          "720": "img/SC-R01-107-720.webp",
+          "1280": "img/SC-R01-107-1280.webp"
+        },
+        "x_webp_b": {
+          "720": "img/SC-R01-107-b-720.webp",
+          "1280": "img/SC-R01-107-b-1280.webp"
+        }
+      },
+      "option_tags": [
+        "section:taste"
+      ],
+      "yes": {
+        "summary": "Light & Coastal feels more like home in the kitchen and living room."
+      },
+      "no": {
+        "summary": "Warm & Grounded feels more like home in the kitchen and living room."
+      }
+    },
+    {
+      "id": "SC-R01-108",
+      "kind": "compare",
+      "question": "The downstairs bath: Warm & Grounded or Light & Coastal?",
+      "x_ab": {
+        "left": "Warm & Grounded",
+        "right": "Light & Coastal"
+      },
+      "order": 8,
+      "image": {
+        "file": "img/SC-R01-108.jpg",
+        "file_b": "img/SC-R01-108-b.jpg",
+        "alt": "The downstairs bath from the door: a step-free glass shower ahead. Left, Warm & Grounded: handmade cream tile, warm brass fittings, a lantern sconce, a dark stone vanity top. Right, Light & Coastal: white subway tile, beadboard below pale sea-glass walls, polished nickel.",
+        "x_webp": {
+          "720": "img/SC-R01-108-720.webp",
+          "1280": "img/SC-R01-108-1280.webp"
+        },
+        "x_webp_b": {
+          "720": "img/SC-R01-108-b-720.webp",
+          "1280": "img/SC-R01-108-b-1280.webp"
+        }
+      },
+      "option_tags": [
+        "section:taste"
+      ],
+      "yes": {
+        "summary": "Light & Coastal feels more like home in the downstairs bath."
+      },
+      "no": {
+        "summary": "Warm & Grounded feels more like home in the downstairs bath."
+      }
+    },
+    {
+      "id": "SC-R01-109",
+      "kind": "compare",
+      "question": "Your bath upstairs: Period & Playful or Light & Coastal?",
+      "x_ab": {
+        "left": "Period & Playful",
+        "right": "Light & Coastal"
+      },
+      "order": 9,
+      "image": {
+        "file": "img/SC-R01-109.jpg",
+        "file_b": "img/SC-R01-109-b.jpg",
+        "alt": "Your bath upstairs under the dormer: a walk-in glass shower and the vanity under the window. Left, Period & Playful: square white tile, a soft green vanity, a black and white checkerboard floor. Right, Light & Coastal: beadboard below pale sea-glass walls, a white vanity, nickel fittings.",
+        "x_webp": {
+          "720": "img/SC-R01-109-720.webp",
+          "1280": "img/SC-R01-109-1280.webp"
+        },
+        "x_webp_b": {
+          "720": "img/SC-R01-109-b-720.webp",
+          "1280": "img/SC-R01-109-b-1280.webp"
+        }
+      },
+      "option_tags": [
+        "section:taste"
+      ],
+      "yes": {
+        "summary": "Light & Coastal feels more like home in your bath upstairs."
+      },
+      "no": {
+        "summary": "Period & Playful feels more like home in your bath upstairs."
+      }
+    },
+    {
+      "id": "SC-R01-110",
+      "kind": "option",
+      "question": "A kitchen set up so the two of you can cook at the same time. Love it?",
+      "order": 10,
+      "image": {
+        "file": "img/SC-R01-110.jpg",
+        "alt": "The kitchen run seen from the living room, with counter space along one wall and the range at the far end",
+        "x_webp": {
+          "720": "img/SC-R01-110-720.webp",
+          "1280": "img/SC-R01-110-1280.webp"
+        }
+      },
+      "option_tags": [
+        "section:program"
+      ],
+      "yes": {
+        "summary": "You often cook together."
+      },
+      "no": {
+        "summary": "One of you does most of the cooking, with company nearby."
+      }
+    },
+    {
+      "id": "SC-R01-111",
+      "kind": "option",
+      "question": "Here's the plan upstairs: your own suite with its bath, and a guest room with its own bath. Love it?",
+      "order": 11,
+      "image": {
+        "file": "img/SC-R01-111.jpg",
+        "alt": "Upstairs through your dressing room and laundry, past built-in closets, to your bedroom at the end",
+        "x_webp": {
+          "720": "img/SC-R01-111-720.webp",
+          "1280": "img/SC-R01-111-1280.webp"
+        }
+      },
+      "option_tags": [
+        "section:layout"
+      ],
+      "yes": {
+        "summary": "The upstairs plan lands."
+      },
+      "no": {
+        "summary": "Not this one: we'll come back with another way."
+      }
+    },
+    {
+      "id": "SC-R01-112",
+      "kind": "detail",
+      "question": "When everyone comes home: about 6 sleep comfortably, up to 9 with the sofa, and your suite stays yours. Feel right?",
+      "order": 12,
+      "image": {
+        "file": "img/SC-R01-112.png",
+        "alt": "Where everyone sleeps when the whole family visits: the upstairs plan with your bedroom and the guest room, and the list: your bedroom 2, the guest room 3, the dormer window seat 1, a bunk nook in the slope 0 to 1, and the living room sleeper sofa 2",
+        "fit": "contain",
+        "x_webp": {
+          "720": "img/SC-R01-112-720.webp",
+          "1280": "img/SC-R01-112-1280.webp"
+        }
+      },
+      "option_tags": [
+        "section:layout"
+      ],
+      "yes": {
+        "summary": "That is enough room for family visits."
+      },
+      "no": {
+        "summary": "We need more beds when family visits."
+      }
+    },
+    {
+      "id": "SC-R01-113",
+      "kind": "option",
+      "question": "Into the kitchen: fully open like this (Love it), or a wide opening framed in period trim (Nope)?",
+      "order": 13,
+      "image": {
+        "file": "img/SC-R01-113.jpg",
+        "alt": "The living room with the kitchen fully open beside the fireplace, no wall between them",
+        "x_webp": {
+          "720": "img/SC-R01-113-720.webp",
+          "1280": "img/SC-R01-113-1280.webp"
+        }
+      },
+      "option_tags": [
+        "section:layout"
+      ],
+      "yes": {
+        "summary": "Fully open: the living room and kitchen read as one room."
+      },
+      "no": {
+        "summary": "A wide cased opening with period trim: connected rooms."
+      }
+    },
+    {
+      "id": "SC-R01-114",
+      "kind": "compare",
+      "question": "The tub upstairs: the original tub kept in the guest bath, or a soaking tub in your own bath?",
+      "x_ab": {
+        "left": "Tub in the guest bath",
+        "right": "Tub in your bath"
+      },
+      "order": 14,
+      "image": {
+        "file": "img/SC-R01-114.jpg",
+        "file_b": "img/SC-R01-114-b.jpg",
+        "alt": "Your bath upstairs from its doorway. Left: a walk-in glass shower and a vanity under the dormer window, with the original tub kept in the guest bath. Right: a soaking tub under the dormer window beside the walk-in shower",
+        "x_webp": {
+          "720": "img/SC-R01-114-720.webp",
+          "1280": "img/SC-R01-114-1280.webp"
+        },
+        "x_webp_b": {
+          "720": "img/SC-R01-114-b-720.webp",
+          "1280": "img/SC-R01-114-b-1280.webp"
+        }
+      },
+      "option_tags": [
+        "section:layout"
+      ],
+      "yes": {
+        "summary": "A soaking tub under the dormer window in your bath, beside a walk-in shower; the guest bath gets a walk-in shower."
+      },
+      "no": {
+        "summary": "The original 1941 tub, restored, stays in the guest bath; your bath gets a large walk-in shower."
+      }
+    },
+    {
+      "id": "SC-R01-115",
+      "kind": "compare",
+      "question": "Kitchen cabinets: gray-green or warm white?",
+      "x_ab": {
+        "left": "Gray-green",
+        "right": "Warm white"
+      },
+      "order": 15,
+      "image": {
+        "file": "img/SC-R01-115.jpg",
+        "file_b": "img/SC-R01-115-b.jpg",
+        "alt": "The living room toward the fireplace with the kitchen open beside it, the same room both sides. Left, Gray-green: soft gray-green Shaker cabinets with brass pulls. Right, Warm white: warm white Shaker cabinets with the same brass pulls.",
+        "x_webp": {
+          "720": "img/SC-R01-115-720.webp",
+          "1280": "img/SC-R01-115-1280.webp"
+        },
+        "x_webp_b": {
+          "720": "img/SC-R01-115-b-720.webp",
+          "1280": "img/SC-R01-115-b-1280.webp"
+        }
+      },
+      "option_tags": [
+        "section:cabinets_storage"
+      ],
+      "yes": {
+        "summary": "Warm white painted kitchen cabinets."
+      },
+      "no": {
+        "summary": "A soft gray-green on the kitchen cabinets."
+      }
+    },
+    {
+      "id": "SC-R01-116",
+      "kind": "compare",
+      "question": "The fireplace brick: limewashed brick or natural red brick?",
+      "x_ab": {
+        "left": "Limewashed brick",
+        "right": "Natural red brick"
+      },
+      "order": 16,
+      "image": {
+        "file": "img/SC-R01-116.jpg",
+        "file_b": "img/SC-R01-116-b.jpg",
+        "alt": "The living room into the kitchen with the chimney and its black insert, the same room both sides. Left, Limewashed brick: the same brick limewashed soft and pale. Right, Natural red brick: natural red brick, cleaned and repointed.",
+        "x_webp": {
+          "720": "img/SC-R01-116-720.webp",
+          "1280": "img/SC-R01-116-1280.webp"
+        },
+        "x_webp_b": {
+          "720": "img/SC-R01-116-b-720.webp",
+          "1280": "img/SC-R01-116-b-1280.webp"
+        }
+      },
+      "option_tags": [
+        "section:floors_surfaces"
+      ],
+      "yes": {
+        "summary": "Natural red brick, cleaned and repointed."
+      },
+      "no": {
+        "summary": "Soft, limewashed brick."
+      }
+    },
+    {
+      "id": "SC-R01-117",
+      "kind": "compare",
+      "question": "The lower bath walls: beadboard or tile?",
+      "x_ab": {
+        "left": "Beadboard",
+        "right": "Tile"
+      },
+      "order": 17,
+      "image": {
+        "file": "img/SC-R01-117.jpg",
+        "file_b": "img/SC-R01-117-b.jpg",
+        "alt": "The downstairs bath from the door, the same room both sides. Left, Beadboard: painted beadboard on the lower walls under a white cap. Right, Tile: white 3x6 tile on the lower walls under the same cap.",
+        "x_webp": {
+          "720": "img/SC-R01-117-720.webp",
+          "1280": "img/SC-R01-117-1280.webp"
+        },
+        "x_webp_b": {
+          "720": "img/SC-R01-117-b-720.webp",
+          "1280": "img/SC-R01-117-b-1280.webp"
+        }
+      },
+      "option_tags": [
+        "section:floors_surfaces"
+      ],
+      "yes": {
+        "summary": "A white tile wainscot."
+      },
+      "no": {
+        "summary": "Painted beadboard on the lower walls."
+      }
+    },
+    {
+      "id": "SC-R01-119",
+      "kind": "compare",
+      "question": "Faucets, lights and knobs: nickel or warm brass?",
+      "x_ab": {
+        "left": "Nickel",
+        "right": "Warm brass"
+      },
+      "order": 18,
+      "image": {
+        "file": "img/SC-R01-119.jpg",
+        "file_b": "img/SC-R01-119-b.jpg",
+        "alt": "The downstairs bath from the door, the same room both sides. Left, Nickel: the same fittings and sconce in nickel. Right, Warm brass: warm brass shower valve, head, grab bar, faucet and lantern sconce.",
+        "x_webp": {
+          "720": "img/SC-R01-119-720.webp",
+          "1280": "img/SC-R01-119-1280.webp"
+        },
+        "x_webp_b": {
+          "720": "img/SC-R01-119-b-720.webp",
+          "1280": "img/SC-R01-119-b-1280.webp"
+        }
+      },
+      "option_tags": [
+        "section:lighting_hardware"
+      ],
+      "yes": {
+        "summary": "Warm brass (or nickel plumbing with brass lights and pulls)."
+      },
+      "no": {
+        "summary": "Nickel throughout."
+      }
+    },
+    {
+      "id": "SC-R01-120",
+      "kind": "compare",
+      "question": "Hanging lights: clear ribbed glass or milk-glass schoolhouse?",
+      "x_ab": {
+        "left": "Clear ribbed glass",
+        "right": "Milk-glass schoolhouse"
+      },
+      "order": 19,
+      "image": {
+        "file": "img/SC-R01-120.jpg",
+        "file_b": "img/SC-R01-120-b.jpg",
+        "alt": "The living room into the kitchen with two hanging lights, the same room both sides. Left, Clear ribbed glass: the same two pendants with clear ribbed glass shades. Right, Milk-glass schoolhouse: two schoolhouse pendants with white milk-glass shades.",
+        "x_webp": {
+          "720": "img/SC-R01-120-720.webp",
+          "1280": "img/SC-R01-120-1280.webp"
+        },
+        "x_webp_b": {
+          "720": "img/SC-R01-120-b-720.webp",
+          "1280": "img/SC-R01-120-b-1280.webp"
+        }
+      },
+      "option_tags": [
+        "section:lighting_hardware"
+      ],
+      "yes": {
+        "summary": "Schoolhouse lights with milk-glass shades."
+      },
+      "no": {
+        "summary": "Clear ribbed glass pendants."
+      }
+    }
+  ]
+}
